@@ -25,7 +25,7 @@ namespace ChatApp
             InitializeComponent();
         }
 
-        private void TextBox_TextChanged()
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
