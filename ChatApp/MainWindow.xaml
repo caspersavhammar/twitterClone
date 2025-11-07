@@ -7,6 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <TextBox TextWrapping="Wrap" Margin="280,82,283,325" TextChanged="TextBox_TextChanged"/>
+        <Label Content="IP-Adress:" Margin="280,53,414,352"/>
 
     </Grid>
 </Window>

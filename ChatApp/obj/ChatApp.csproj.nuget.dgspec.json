@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "\\\\filur04.it.liu.se\\students\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj": {}
+    "\\\\FILUR04.IT.LIU.SE\\STUDENTS\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj": {}
   },
   "projects": {
-    "\\\\filur04.it.liu.se\\students\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj": {
+    "\\\\FILUR04.IT.LIU.SE\\STUDENTS\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "\\\\filur04.it.liu.se\\students\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj",
+        "projectUniqueName": "\\\\FILUR04.IT.LIU.SE\\STUDENTS\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj",
         "projectName": "ChatApp",
-        "projectPath": "\\\\filur04.it.liu.se\\students\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj",
+        "projectPath": "\\\\FILUR04.IT.LIU.SE\\STUDENTS\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj",
         "packagesPath": "C:\\Users\\casav929\\.nuget\\packages\\",
-        "outputPath": "\\\\filur04.it.liu.se\\students\\casav929\\Documents\\tddd49\\ChatApp\\obj\\",
+        "outputPath": "\\\\FILUR04.IT.LIU.SE\\STUDENTS\\casav929\\Documents\\tddd49\\ChatApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

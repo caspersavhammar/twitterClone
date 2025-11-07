@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "LkhvTx7J1Hc=",
+  "dgSpecHash": "LujKf/8Rr8Y=",
   "success": true,
-  "projectFilePath": "\\\\filur04.it.liu.se\\students\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj",
+  "projectFilePath": "\\\\FILUR04.IT.LIU.SE\\STUDENTS\\casav929\\Documents\\tddd49\\ChatApp\\ChatApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\casav929\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.21\\microsoft.windowsdesktop.app.ref.8.0.21.nupkg.sha512",
     "C:\\Users\\casav929\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.21\\microsoft.netcore.app.ref.8.0.21.nupkg.sha512",
