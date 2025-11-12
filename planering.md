@@ -1,35 +1,10 @@
 # Planering
-
-### Tasks
-
-##### Lab1:
-
-
-##### Lab2:
-
-
-##### Lab3:
-
-
-##### Lab4:
-
-
-
 # Veckor:
-
 #### v47
-
-
-#### v48
-
-
+Lab1: Fredag 21/11
 #### v49
-
-
+Lab2: Fredag 5/12
 #### v50
-
-
+Lab3: Fredag 12/12
 #### v51
-
-
-
+Lab4: Fredag 19/12
