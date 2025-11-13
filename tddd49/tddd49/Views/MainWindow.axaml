@@ -18,7 +18,7 @@
     <StackPanel>
         <Border Padding="10" Margin="5" CornerRadius="10" Background="DarkTurquoise">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Span Foreground="Fuchsia">{Binding Greeting}</Span>
+                <Span Foreground="Fuchsia">Welcome to Shut App</Span>
             </TextBlock>
         </Border>
             <Label HorizontalAlignment="Center" Margin="10">IP-adress</Label>
