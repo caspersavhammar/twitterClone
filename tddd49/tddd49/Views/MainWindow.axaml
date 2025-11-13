@@ -1,0 +1,31 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:tddd49.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="700"
+        x:Class="tddd49.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="tddd49">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <StackPanel>
+        <Border Padding="10" Margin="5" CornerRadius="10" Background="DarkTurquoise">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Span Foreground="Fuchsia">{Binding Greeting}</Span>
+            </TextBlock>
+        </Border>
+            <Label HorizontalAlignment="Center" Margin="10">IP-adress</Label>
+            <TextBox Margin="100 5"/>
+            <Label HorizontalAlignment="Center" Margin="10">PORT</Label>
+            <TextBox Margin="100 5"/>
+            <Button HorizontalAlignment="Center">Connect</Button>
+    </StackPanel>
+
+</Window>
