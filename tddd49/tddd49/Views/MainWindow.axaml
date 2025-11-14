@@ -21,11 +21,12 @@
                 <Span Foreground="Fuchsia">Welcome to Shut App</Span>
             </TextBlock>
         </Border>
-            <Label HorizontalAlignment="Center" Margin="10">IP-adress</Label>
-            <TextBox Margin="100 5"/>
+            <Label HorizontalAlignment="Center" Margin="10">IP-address</Label>
+            <TextBox Text="{Binding address}" Margin="100 5"/>
             <Label HorizontalAlignment="Center" Margin="10">PORT</Label>
-            <TextBox Margin="100 5"/>
-            <Button HorizontalAlignment="Center">Connect</Button>
+            <TextBox Text="{Binding port}" Margin="100 5"/>
+            <Button Command="{Binding start_connection(address, port)}" HorizontalAlignment="Center">Connect</Button>
+            <TextBlock Text="{Binding Greeting}"/>
     </StackPanel>
 
 </Window>

@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.Model
+namespace tddd49.Models
 {
     internal class NetworkManager : INotifyPropertyChanged
     {
@@ -23,26 +23,19 @@ namespace Demo.Model
         }
 
         private string message;
-        public string Message
-        {
+        public string Message {
             get { return message; }
             set { message = value; OnPropertyChanged("Message"); }
         }
 
-        public bool startConnection()
-        {
-
-
-            Task.Factory.StartNew(() =>
-            {
-
+        public bool startConnection(IPAddress address, int PORT) {
+            
+            Task.Factory.StartNew(() => {
                 bool secondTry = false;
-                var ipEndPoint = new IPEndPoint(IPAddress.Loopback, 13000);
+                IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
                 TcpListener server = new TcpListener(ipEndPoint);
                 TcpClient endPoint = null;
-                try
-                {
-
+                try {
                     server.Start();
                     System.Diagnostics.Debug.WriteLine("Start listening...");
                     endPoint = server.AcceptTcpClient();
@@ -50,27 +43,20 @@ namespace Demo.Model
                     handleConnection(endPoint);
 
                 }
-                catch
-                {
-
+                catch {
                     secondTry = true;
                 }
-               
-
-                if (secondTry)
-                {
-
+                
+                if (secondTry) {
                     endPoint = new TcpClient();
-                    try
-                    {
+                    try {
                         System.Diagnostics.Debug.WriteLine("Connecting to the server...");
                         endPoint.Connect(ipEndPoint);
                         System.Diagnostics.Debug.WriteLine("Connection established!");
                         handleConnection(endPoint);
                     }
-                    finally                    {
+                    finally {
                         endPoint.Close();
-
                     }
                 }
             });
