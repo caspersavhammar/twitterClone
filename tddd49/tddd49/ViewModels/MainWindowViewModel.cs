@@ -12,15 +12,28 @@ namespace tddd49.ViewModels
         
         [ObservableProperty] private string _title;
         NetworkManager networkManager;
-        public string Greeting { get; } = "Welcome to Avalonia!";
-        public static string address { get; set; }
-        public static string port { get; set; }
+        public ReactiveCommand<IPAddress, Unit> address {
+            get {
+                return casted_address;
+            }
+            set {
+                IPAddress casted_address = IPAddress.Parse(address);
+                // Update notifier
+            }
+        }
+
+        private IPAddress casted_address;
+        public ReactiveCommand<Unit, Unit> port { get; set; }
         
-        IPAddress casted_address = IPAddress.Parse(address);
         private int casted_port = Int16.Parse(port);
 
-        public ReactiveCommand<Unit, Unit> start_connection() {
-        
+        public MainWindowViewModel()
+        {
+            Connect = ReactiveCommand.Create(StartConnection);
+        }
+
+        private void StartConnection() {
+            networkManager.startConnection(casted_address, casted_port);
         }
     }    
 }
