@@ -1,39 +1,59 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Net;
 using System.Reactive;
+using System.Runtime.InteropServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using tddd49.Models;
-using ReactiveUI; 
+using ReactiveUI;
 
 namespace tddd49.ViewModels
 {
-    public partial class MainWindowViewModel : ObservableObject
+    internal class MainWindowViewModel : INotifyPropertyChanged
     {
-        
-        [ObservableProperty] private string _title;
-        NetworkManager networkManager;
-        public ReactiveCommand<IPAddress, Unit> address {
-            get {
-                return casted_address;
+        NetworkManager network_manager;
+        private string _ip_address;
+        private string _port;
+        public string ip_address
+        {
+            get { return _ip_address; } 
+            set
+            {
+                _ip_address = value;
+                OnPropertyChanged(nameof(ip_address));
             }
-            set {
-                IPAddress casted_address = IPAddress.Parse(address);
-                // Update notifier
+        }
+        public string port
+        {
+            get { return _port; }
+            set
+            {
+                _port = value;
+                OnPropertyChanged(nameof(port));
             }
         }
 
-        private IPAddress casted_address;
-        public ReactiveCommand<Unit, Unit> port { get; set; }
-        
-        private int casted_port = Int16.Parse(port);
+        ReactiveCommand<Unit, Unit> connect;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(NetworkManager nm)
         {
-            Connect = ReactiveCommand.Create(StartConnection);
+            network_manager = nm;
+            connect = ReactiveCommand.Create(StartConnection);
         }
 
         private void StartConnection() {
-            networkManager.startConnection(casted_address, casted_port);
+            IPAddress casted_address = IPAddress.Parse(_ip_address);
+            int casted_port = int.Parse(_port);
+            Debug.Print(_port);
+            Debug.Print(_ip_address);
+            network_manager.startConnection(casted_address, casted_port);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }    
 }
