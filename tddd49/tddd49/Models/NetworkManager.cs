@@ -1,22 +1,18 @@
+using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tddd49.Models
-{
+namespace tddd49.Models {
     internal class NetworkManager : INotifyPropertyChanged
     {
-
         private NetworkStream stream;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
+        private void OnPropertyChanged(string propertyName = "") {
+            if (PropertyChanged != null) {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 
             }
@@ -29,6 +25,7 @@ namespace tddd49.Models
         }
 
         public bool startConnection(IPAddress address, int PORT) {
+            Console.WriteLine("start connection is starting on the net work yeeees");
             
             Task.Factory.StartNew(() => {
                 bool secondTry = false;
@@ -36,6 +33,7 @@ namespace tddd49.Models
                 TcpListener server = new TcpListener(ipEndPoint);
                 TcpClient endPoint = null;
                 try {
+                    Console.WriteLine("Starting server on the main bich yeeeees...");
                     server.Start();
                     System.Diagnostics.Debug.WriteLine("Start listening...");
                     endPoint = server.AcceptTcpClient();
@@ -48,6 +46,7 @@ namespace tddd49.Models
                 }
                 
                 if (secondTry) {
+                    Console.WriteLine("Connecting to main bich yuh");
                     endPoint = new TcpClient();
                     try {
                         System.Diagnostics.Debug.WriteLine("Connecting to the server...");
@@ -62,26 +61,19 @@ namespace tddd49.Models
             });
 
             return true;
-
-
+            
         }
-        private void handleConnection(TcpClient endPoint)
-        {
+        private void handleConnection(TcpClient endPoint) {
             stream = endPoint.GetStream();
-            while (true)
-            {
+            while (true) {
                 var buffer = new byte[1024];
                 int received = stream.Read(buffer, 0, 1024);
                 var message = Encoding.UTF8.GetString(buffer, 0, received);
                 this.Message = message;
-
             }
-
         }
-        public void sendChar(string str)
-        {
-            Task.Factory.StartNew(() =>
-            {
+        public void sendChar(string str) {
+            Task.Factory.StartNew(() => {
                 var buffer = Encoding.UTF8.GetBytes(str);
                 stream.Write(buffer, 0, str.Length);
             });
