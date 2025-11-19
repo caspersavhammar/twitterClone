@@ -25,7 +25,7 @@
             <TextBox Text="{Binding ip_address}" Margin="100 5"/>
             <Label HorizontalAlignment="Center" Margin="10">PORT</Label>
             <TextBox Text="{Binding port}" Margin="100 5"/>
-            <Button Command="{Binding StartConnection}" HorizontalAlignment="Center">Connect</Button>
+            <Button Command="{Binding connect}" HorizontalAlignment="Center">Connect</Button>
     </StackPanel>
 
 </Window>
