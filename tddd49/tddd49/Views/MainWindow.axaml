@@ -16,16 +16,29 @@
     </Design.DataContext>
 
     <StackPanel>
-        <Border Padding="10" Margin="5" CornerRadius="10" Background="DarkTurquoise">
+        <Border Padding="10" Margin="10" CornerRadius="10" Background="DarkTurquoise">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Span Foreground="Fuchsia">Welcome to Shut App</Span>
             </TextBlock>
         </Border>
-            <Label HorizontalAlignment="Center" Margin="10">IP-address</Label>
-            <TextBox Text="{Binding ip_address}" Margin="100 5"/>
-            <Label HorizontalAlignment="Center" Margin="10">PORT</Label>
-            <TextBox Text="{Binding port}" Margin="100 5"/>
-            <Button Command="{Binding connect}" HorizontalAlignment="Center">Connect</Button>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <Label HorizontalAlignment="Left" Margin="10">IP-address</Label>
+                <TextBox Text="{Binding ip_address}" Margin="10" Width="190" HorizontalAlignment="Left"/>
+                <Label HorizontalAlignment="Left" Margin="10">PORT</Label>
+                <TextBox Text="{Binding port}" Margin="10" Width="190" HorizontalAlignment="Left"/>
+                <Button Command="{Binding connect}" Margin="10" Width="190" HorizontalAlignment="Left">Connect</Button>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Border Margin="10" Padding="300" CornerRadius="20" Background="Black">
+                    <TextBlock>TEST</TextBlock>
+                </Border>
+            </StackPanel>
+        </Grid>
     </StackPanel>
 
 </Window>

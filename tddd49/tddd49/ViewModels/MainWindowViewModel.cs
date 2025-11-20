@@ -1,15 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Net;
-using System.Reactive;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using tddd49.Models;
-using ReactiveUI;
 
 namespace tddd49.ViewModels
 {
@@ -38,6 +32,11 @@ namespace tddd49.ViewModels
         public MainWindowViewModel(NetworkManager nm) {
             network_manager = nm;
             connect = new RelayCommand(StartConnection);
+        }
+
+        public MainWindowViewModel()
+        {
+            
         }
 
         private void StartConnection() {
