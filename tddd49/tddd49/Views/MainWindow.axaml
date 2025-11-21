@@ -15,10 +15,10 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <StackPanel>
-        <Border Padding="10" Margin="10" CornerRadius="10" Background="DarkTurquoise">
+    <StackPanel Background="BurlyWood">
+        <Border BorderBrush="Black" BorderThickness="1" Padding="10" Margin="10" CornerRadius="10" Background="AntiqueWhite">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Span Foreground="Fuchsia">Welcome to Shut App</Span>
+                <Span Foreground="Black">Welcome to Shut App</Span>
             </TextBlock>
         </Border>
         <Grid>
@@ -27,18 +27,40 @@
                 <ColumnDefinition Width="5*" />
             </Grid.ColumnDefinitions>
             <StackPanel>
-                <Label HorizontalAlignment="Left" Margin="10">IP-address</Label>
-                <TextBox Text="{Binding ip_address}" Margin="10" Width="190" HorizontalAlignment="Left"/>
-                <Label HorizontalAlignment="Left" Margin="10">PORT</Label>
-                <TextBox Text="{Binding port}" Margin="10" Width="190" HorizontalAlignment="Left"/>
-                <Button Command="{Binding connect}" Margin="10" Width="190" HorizontalAlignment="Left">Connect</Button>
-            </StackPanel>
-            <StackPanel Grid.Column="1">
-                <Border Margin="10" Padding="300" CornerRadius="20" Background="Black">
-                    <TextBlock>TEST</TextBlock>
-                </Border>
-            </StackPanel>
+                <Label HorizontalAlignment="Left" Margin="10" Foreground="Black">IP-address</Label>
+                <TextBox CornerRadius="20" BorderBrush="Black" Background="AntiqueWhite" Text="{Binding ip_address}" Margin="10 0 0 0" HorizontalContentAlignment="Stretch"/>
+                <Label HorizontalAlignment="Left" Margin="10" Foreground="Black">PORT</Label>
+                <TextBox CornerRadius="20" BorderBrush="Black" Background="AntiqueWhite" Text="{Binding port}" Margin="10 0 0 0" HorizontalContentAlignment="Stretch"/>
+                <Button CornerRadius="20" Command="{Binding connect}" Margin="10 10 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Viewbox>
+                        <TextBlock HorizontalAlignment="Center" Foreground="Black">Connect</TextBlock>
+                    </Viewbox>
+                </Button>
+            </StackPanel >
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Column="1" Margin="10" CornerRadius="20" Background="AntiqueWhite">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="8*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Background="Black" Margin="10"> Test </TextBlock>
+                    
+                    <Grid Grid.Row="1" Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="11*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" CornerRadius="20" BorderBrush="Black" Background="AntiqueWhite" HorizontalContentAlignment="Stretch"/>
+                        <Button CornerRadius="10" Margin="5 0 0 0" Grid.Column="1" >
+                            <TextBlock HorizontalAlignment="Center" Foreground="Black">Connect</TextBlock>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Border>
         </Grid>
     </StackPanel>
-
 </Window>
