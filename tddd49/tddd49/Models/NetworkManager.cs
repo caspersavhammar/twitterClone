@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using tddd49.Views;
 
 namespace tddd49.Models {
     internal class NetworkManager : INotifyPropertyChanged
@@ -24,15 +25,17 @@ namespace tddd49.Models {
             set { message = value; OnPropertyChanged("Message"); }
         }
 
-        public bool startConnection(IPAddress address, int PORT) {
+        async public void startConnection(IPAddress address, int PORT) {
             Console.WriteLine("start connection is starting on the net work yeeees");
-            
-            Task.Factory.StartNew(() => {
+
+            Task.Factory.StartNew(() =>
+            {
                 bool secondTry = false;
                 IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
                 TcpListener server = new TcpListener(ipEndPoint);
                 TcpClient endPoint = null;
-                try {
+                try
+                {
                     Console.WriteLine("Starting server on the main bich yeeeees...");
                     server.Start();
                     System.Diagnostics.Debug.WriteLine("Start listening...");
@@ -41,27 +44,31 @@ namespace tddd49.Models {
                     handleConnection(endPoint);
 
                 }
-                catch {
+                catch
+                {
                     secondTry = true;
                 }
-                
-                if (secondTry) {
+
+                if (secondTry)
+                {
                     Console.WriteLine("Connecting to main bich yuh");
                     endPoint = new TcpClient();
-                    try {
+                    try
+                    {
+                        AlertResponse _alert_window = new AlertResponse();
+                        //await () async => _alert_window.ShowDialog(this);
                         System.Diagnostics.Debug.WriteLine("Connecting to the server...");
                         endPoint.Connect(ipEndPoint);
                         System.Diagnostics.Debug.WriteLine("Connection established!");
                         handleConnection(endPoint);
                     }
-                    finally {
+                    finally
+                    {
                         endPoint.Close();
                     }
                 }
             });
 
-            return true;
-            
         }
         private void handleConnection(TcpClient endPoint) {
             stream = endPoint.GetStream();
