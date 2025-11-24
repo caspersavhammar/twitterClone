@@ -4,6 +4,7 @@
     <option name="projectPerEditor">
       <map>
         <entry key="tddd49/App.axaml" value="tddd49/tddd49.csproj" />
+        <entry key="tddd49/Views/AlertResponse.axaml" value="tddd49/tddd49.csproj" />
         <entry key="tddd49/Views/MainWindow.axaml" value="tddd49/tddd49.csproj" />
       </map>
     </option>

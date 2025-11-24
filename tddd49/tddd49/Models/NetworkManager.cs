@@ -25,22 +25,23 @@ namespace tddd49.Models {
             set { message = value; OnPropertyChanged("Message"); }
         }
 
-        async public void startConnection(IPAddress address, int PORT) {
-            Console.WriteLine("start connection is starting on the net work yeeees");
+        public void startConnection(IPAddress address, int PORT) {
 
+            var _alert_window = new AlertResponse();
+            _alert_window.Show();
             Task.Factory.StartNew(() =>
             {
                 bool secondTry = false;
+                bool startNewWindow = false;
                 IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
                 TcpListener server = new TcpListener(ipEndPoint);
                 TcpClient endPoint = null;
                 try
                 {
-                    Console.WriteLine("Starting server on the main bich yeeeees...");
                     server.Start();
-                    System.Diagnostics.Debug.WriteLine("Start listening...");
+                    Console.WriteLine("Start listening...");
                     endPoint = server.AcceptTcpClient();
-                    System.Diagnostics.Debug.WriteLine("Connection accepted!");
+                    Console.WriteLine("Connection accepted!");
                     handleConnection(endPoint);
 
                 }
@@ -51,15 +52,14 @@ namespace tddd49.Models {
 
                 if (secondTry)
                 {
-                    Console.WriteLine("Connecting to main bich yuh");
                     endPoint = new TcpClient();
+                    Console.WriteLine("we did it! yey!");
+                    startNewWindow = true;
                     try
                     {
-                        AlertResponse _alert_window = new AlertResponse();
-                        //await () async => _alert_window.ShowDialog(this);
-                        System.Diagnostics.Debug.WriteLine("Connecting to the server...");
+                        Console.WriteLine("Connecting to the server...");
                         endPoint.Connect(ipEndPoint);
-                        System.Diagnostics.Debug.WriteLine("Connection established!");
+                        Console.WriteLine("Connection established!");
                         handleConnection(endPoint);
                     }
                     finally
@@ -67,9 +67,14 @@ namespace tddd49.Models {
                         endPoint.Close();
                     }
                 }
-            });
 
+                // if (startNewWindow) {
+                    // _alert_window.Show();
+                // }
+            });
+            
         }
+
         private void handleConnection(TcpClient endPoint) {
             stream = endPoint.GetStream();
             while (true) {

@@ -64,11 +64,8 @@ namespace tddd49.ViewModels
         private void StartConnection() {
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
-            Console.WriteLine("Address: " + casted_address);
-            Console.WriteLine("Port: " + casted_port);
             network_manager.startConnection(casted_address, casted_port);
             connected_text = "Server started";
-            Console.WriteLine(connected_text);
         }
 
         public void OnPropertyChanged([CallerMemberName] string name = "") =>

@@ -40,7 +40,8 @@
                         <TextBlock HorizontalAlignment="Center" Foreground="Black">Connect</TextBlock>
                     </Viewbox>
                 </Button>
-                <TextBlock Foreground="Green" Text="{Binding connected_text}" />
+                <TextBlock HorizontalAlignment="Center" Foreground="Green"
+                           Text="{Binding connected_text}" />
             </StackPanel>
             <Border Grid.Column="1" Margin="10" Background="AntiqueWhite" BorderBrush="Black" BorderThickness="2" CornerRadius="20">
                 <Grid RowDefinitions="8*, 1*">
