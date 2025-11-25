@@ -29,8 +29,8 @@ namespace tddd49.Models {
 
             var _alert_window = new AlertResponse();
             _alert_window.Show();
-            Task.Factory.StartNew(() =>
-            {
+            // Task.Factory.StartNew(() =>
+            // {
                 bool secondTry = false;
                 bool startNewWindow = false;
                 IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
@@ -40,7 +40,8 @@ namespace tddd49.Models {
                 {
                     server.Start();
                     Console.WriteLine("Start listening...");
-                    endPoint = server.AcceptTcpClient();
+                    endPoint = server.BeginAcceptTcpClient();
+                    // endPoint = server.AcceptTcpClient();
                     Console.WriteLine("Connection accepted!");
                     handleConnection(endPoint);
 
@@ -71,7 +72,7 @@ namespace tddd49.Models {
                 // if (startNewWindow) {
                     // _alert_window.Show();
                 // }
-            });
+            // });
             
         }
 
