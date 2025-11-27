@@ -25,62 +25,55 @@ namespace tddd49.Models {
             set { message = value; OnPropertyChanged("Message"); }
         }
 
-        public void startConnection(IPAddress address, int PORT) {
-
+        public async Task startConnection(IPAddress address, int PORT) {
             var _alert_window = new AlertResponse();
             _alert_window.Show();
-            // Task.Factory.StartNew(() =>
-            // {
-                bool secondTry = false;
-                bool startNewWindow = false;
-                IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
-                TcpListener server = new TcpListener(ipEndPoint);
-                TcpClient endPoint = null;
+            bool secondTry = false;
+            IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
+            TcpListener server = new TcpListener(ipEndPoint);
+            TcpClient endPoint = null;
+            try
+            {
+                server.Start();
+                Console.WriteLine("Start listening...");
+                endPoint = await server.AcceptTcpClientAsync();
+                Console.WriteLine("Connection accepted!");
+                handleConnection(endPoint);
+
+            }
+            catch
+            {
+                secondTry = true;
+            }
+
+            if (secondTry)
+            {
+                endPoint = new TcpClient();
                 try
                 {
-                    server.Start();
-                    Console.WriteLine("Start listening...");
-                    endPoint = server.BeginAcceptTcpClient();
-                    // endPoint = server.AcceptTcpClient();
-                    Console.WriteLine("Connection accepted!");
+                    Console.WriteLine("Connecting to the server...");
+                    await endPoint.ConnectAsync(ipEndPoint);
+                    Console.WriteLine("Connection established!");
                     handleConnection(endPoint);
-
                 }
-                catch
+                finally
                 {
-                    secondTry = true;
+                    endPoint.Close();
                 }
+            }
 
-                if (secondTry)
-                {
-                    endPoint = new TcpClient();
-                    Console.WriteLine("we did it! yey!");
-                    startNewWindow = true;
-                    try
-                    {
-                        Console.WriteLine("Connecting to the server...");
-                        endPoint.Connect(ipEndPoint);
-                        Console.WriteLine("Connection established!");
-                        handleConnection(endPoint);
-                    }
-                    finally
-                    {
-                        endPoint.Close();
-                    }
-                }
-
-                // if (startNewWindow) {
-                    // _alert_window.Show();
-                // }
-            // });
-            
         }
 
-        private void handleConnection(TcpClient endPoint) {
+        private async void handleConnection(TcpClient endPoint) {
+            Console.WriteLine("We did it! yey. Handlin the connection");
             stream = endPoint.GetStream();
+            Console.WriteLine("We got the stream");
+            
             while (true) {
                 var buffer = new byte[1024];
-                int received = stream.Read(buffer, 0, 1024);
+                Console.WriteLine("We stuck here bish");
+                int received = await stream.ReadAsync(buffer, 0, 1024);
+                Console.WriteLine("We stuck second time bish");
                 var message = Encoding.UTF8.GetString(buffer, 0, received);
                 this.Message = message;
             }
