@@ -37,9 +37,9 @@ namespace tddd49.Models {
                 server.Start();
                 Console.WriteLine("Start listening...");
                 endPoint = await server.AcceptTcpClientAsync();
+                
                 Console.WriteLine("Connection accepted!");
                 handleConnection(endPoint);
-
             }
             catch
             {
@@ -64,18 +64,18 @@ namespace tddd49.Models {
 
         }
 
-        private async void handleConnection(TcpClient endPoint) {
+        private async Task handleConnection(TcpClient endPoint) {
             Console.WriteLine("We did it! yey. Handlin the connection");
             stream = endPoint.GetStream();
             Console.WriteLine("We got the stream");
             
             while (true) {
-                var buffer = new byte[1024];
+                var buffer = new byte[1_024];
                 Console.WriteLine("We stuck here bish");
-                int received = await stream.ReadAsync(buffer, 0, 1024);
-                Console.WriteLine("We stuck second time bish");
-                var message = Encoding.UTF8.GetString(buffer, 0, received);
-                this.Message = message;
+                int received = await stream.ReadAsync(buffer);
+                var message_from_stream = Encoding.UTF8.GetString(buffer, 0, received);
+                Console.WriteLine($"Message received: \"{message_from_stream}\"");
+                this.Message = message_from_stream;
             }
         }
         public void sendChar(string str) {
