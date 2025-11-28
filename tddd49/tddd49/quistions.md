@@ -1,5 +1,8 @@
 ### Questions:
 
-- Vad är callback
-- Byt ut alla grejer till BeginNånting aka strukturera om all kod i startConnection
-- Gråt av glädje
+Vår:
+- Kolla på Panel
+- Kolla på ObservableCollection
+
+Sahands: xD 
+- Ser de bra ut?
