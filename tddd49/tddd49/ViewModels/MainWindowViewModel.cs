@@ -11,8 +11,13 @@ namespace tddd49.ViewModels
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        
-        NetworkManager network_manager;
+        private void OnPropertyChanged(string propertyName = "") {
+            if (PropertyChanged != null) {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        NetworkManager network_manager { get; set; }
         private string _ip_address;
         private string _port;
         private string _username;
@@ -21,14 +26,14 @@ namespace tddd49.ViewModels
             get => _ip_address;
             set {
                 _ip_address = value;
-                OnPropertyChanged();
+                OnPropertyChanged("ip_address");
             }
         }
         public string port {
             get => _port;
             set {
                 _port = value;
-                OnPropertyChanged();
+                OnPropertyChanged("port");
             }
         }
 
@@ -36,7 +41,7 @@ namespace tddd49.ViewModels
             get => _username;
             set {
                 _username = value;
-                OnPropertyChanged();
+                OnPropertyChanged("username");
             }
         }
         
@@ -44,7 +49,7 @@ namespace tddd49.ViewModels
             get =>_connected_text;
             set {
                 _connected_text = value;
-                OnPropertyChanged();
+                OnPropertyChanged("connected_text");
             }
         }
         public ICommand connect { get; }
@@ -53,6 +58,8 @@ namespace tddd49.ViewModels
         {
             connected_text = "";
             network_manager = nm;
+            network_manager.PropertyChanged += myModel_PropertyChanged;
+
             connect = new RelayCommand(StartConnection);
         }
 
@@ -61,14 +68,19 @@ namespace tddd49.ViewModels
             
         }
 
+        private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            if (e.PropertyName == "connected_text") {
+                var text = network_manager.Connected_text;
+                connected_text = text;
+            }
+        }
+
         private async void StartConnection() {
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
-            connected_text = "Server started";
             await network_manager.startConnection(casted_address, casted_port);
         }
 
-        public void OnPropertyChanged([CallerMemberName] string name = "") =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }    
+    }
+
 }

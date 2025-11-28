@@ -1,5 +1,5 @@
-<Window x:Class="tddd49.Views.AlertRequest" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="using:tddd49.ViewModels" Title="tddd49" d:DesignHeight="850"
-        d:DesignWidth="1450" x:DataType="vm:AlertRequestViewModel" Icon="/Assets/avalonia-logo.ico" mc:Ignorable="d">
+<Window x:Class="tddd49.Views.AlertRequest" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="using:tddd49.ViewModels" Title="tddd49" Width="300"
+        Height="150" x:DataType="vm:AlertRequestViewModel" CanResize="False" Icon="/Assets/avalonia-logo.ico" mc:Ignorable="d">
 
     <Design.DataContext>
         <!--
@@ -8,6 +8,34 @@
         -->
         <vm:AlertRequestViewModel />
     </Design.DataContext>
+
+    <StackPanel Background="BurlyWood">
+        <Border Margin="10" Padding="10" Background="AntiqueWhite" BorderBrush="Black" BorderThickness="1" CornerRadius="10">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Span Foreground="Black">A client is trying to connect</Span>
+            </TextBlock>
+        </Border>
+        <Grid ColumnDefinitions="1*, 1*">
+            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                <Button Background="Green"
+                        Command="{Binding sendRequest}"
+                        CommandParameter="1" CornerRadius="10">
+                    <TextBlock HorizontalAlignment="Center" Foreground="White">
+                        Accept
+                    </TextBlock>
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                <Button Background="Red"
+                        Command="{Binding sendRequest}"
+                        CommandParameter="0" CornerRadius="10">
+                    <TextBlock HorizontalAlignment="Center" Foreground="White">
+                        Deny
+                    </TextBlock>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 
 
 </Window>

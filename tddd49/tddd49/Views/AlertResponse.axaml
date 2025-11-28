@@ -9,7 +9,29 @@
         <vm:AlertResponseViewModel />
     </Design.DataContext>
 
-    <TextBlock>We waitin bich</TextBlock>
+    <StackPanel Background="BurlyWood">
+        <Border Margin="10" Padding="10" Background="AntiqueWhite" BorderBrush="Black" BorderThickness="1" CornerRadius="10">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Span Foreground="Black">A client is trying to connect</Span>
+            </TextBlock>
+        </Border>
+        <Grid ColumnDefinitions="1*, 1*">
+            <StackPanel Grid.Column="0">
+                <Button Command="{Binding sendResponse}" CornerRadius="10">
+                    <TextBlock HorizontalAlignment="Center" Background="Green" Foreground="White">
+                        Accept
+                    </TextBlock>
+                </Button>
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Button Command="{Binding sendResponse}" CornerRadius="10">
+                    <TextBlock HorizontalAlignment="Center" Background="Red" Foreground="White">
+                        Deny
+                    </TextBlock>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
 
 
 </Window>

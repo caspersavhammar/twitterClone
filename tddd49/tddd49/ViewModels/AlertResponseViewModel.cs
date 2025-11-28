@@ -1,6 +1,4 @@
-using System;
 using System.ComponentModel;
-using System.Net;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using tddd49.Models;
@@ -16,5 +14,27 @@ namespace tddd49.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        NetworkManager network_manager { get; set; }
+
+        public ICommand sendResponse { get; }
+
+        public AlertResponseViewModel(NetworkManager nm)
+        {
+            network_manager = nm;
+
+            sendResponse = new RelayCommand(SendResponse);
+        }
+
+        public AlertResponseViewModel()
+        {
+
+        }
+
+        public async void SendResponse()
+        {
+
+        }
+
     }    
 }

@@ -7,8 +7,9 @@ namespace tddd49.Views;
 
 public partial class AlertResponse : Window
 {
-    public AlertResponse()
+    public AlertResponse(NetworkManager nm)
     {
         InitializeComponent();
+        DataContext = new AlertResponseViewModel(nm);
     }
 }
