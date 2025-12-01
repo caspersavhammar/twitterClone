@@ -30,9 +30,23 @@ namespace tddd49.Models {
             set { connected_text = value; OnPropertyChanged("connected_text"); }
         }
 
-        public async Task startConnection(IPAddress address, int PORT) {
-            IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
-            TcpListener server = new TcpListener(ipEndPoint);
+        public async Task startConnection(IPAddress address, int PORT)
+        {
+
+            IPEndPoint ipEndPoint = null;
+            TcpListener server = null;
+            
+            try
+            {
+                ipEndPoint = new IPEndPoint(address, PORT);
+                server = new TcpListener(ipEndPoint);
+            }
+            catch
+            {
+                Connected_text = "Error: Need to specify address and PORT";
+                return;
+            }
+
             try
             {
                 server.Start();
@@ -60,9 +74,22 @@ namespace tddd49.Models {
             }
         }
 
-        public async Task connectConnection(IPAddress address, int PORT) {
-            IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
-            TcpClient endPoint = new TcpClient();
+        public async Task connectConnection(IPAddress address, int PORT)
+        {
+            IPEndPoint ipEndPoint = null;
+            TcpClient endPoint = null;
+            
+            try
+            {
+                ipEndPoint = new IPEndPoint(address, PORT);
+                endPoint = new TcpClient();
+            }
+            catch
+            {
+                Connected_text = "Error: Need to specify address and PORT";
+                return;
+            }
+
             try
             {
                 Console.WriteLine("Connecting to the server...");
@@ -119,7 +146,14 @@ namespace tddd49.Models {
         }
         public async Task sendChar(string str) {
             var buffer = Encoding.UTF8.GetBytes(str);
-            await stream.WriteAsync(buffer, 0, str.Length);
+            try
+            {
+                await stream.WriteAsync(buffer, 0, str.Length);
+            }
+            catch
+            {
+                Connected_text = "Error: No established connection";
+            }
         }
     }
 }

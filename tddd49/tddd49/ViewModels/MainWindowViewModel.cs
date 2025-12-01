@@ -103,7 +103,7 @@ namespace tddd49.ViewModels
         }
 
         private async void send_char() {
-            await network_manager.sendChar(_message);
+                await network_manager.sendChar(_message);
         }
     }
 
