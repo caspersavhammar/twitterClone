@@ -67,7 +67,7 @@ namespace tddd49.Models {
             {
                 Console.WriteLine("Connecting to the server...");
                 await endPoint.ConnectAsync(ipEndPoint);
-                var _alert_window = new AlertResponse(this);
+                var _alert_window = new AlertResponse();
                 _alert_window.Show();
                 stream = endPoint.GetStream();
                 if ( await acceptConnection()) {
@@ -108,12 +108,9 @@ namespace tddd49.Models {
         }
 
         private async Task handleConnection() {
-            Console.WriteLine("We did it! yey. Handlin the connection");
-            Console.WriteLine("We got the stream");
-            
+
             while (true) {
                 var buffer = new byte[1_024];
-                Console.WriteLine("We stuck here bish");
                 int received = await stream.ReadAsync(buffer);
                 var message_from_stream = Encoding.UTF8.GetString(buffer, 0, received);
                 Console.WriteLine($"Message received: \"{message_from_stream}\"");

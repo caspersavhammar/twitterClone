@@ -6,3 +6,4 @@ Vår:
 
 Sahands: xD 
 - Ser de bra ut?
+- Hur fångar man att en connection bryts.

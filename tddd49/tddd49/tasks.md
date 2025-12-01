@@ -1,10 +1,9 @@
 # Tasks
 
-- Bryt ut Connect till två olika knappar
-- Ger återkoppling när inbjudan nekas
-- Ge återkoppling när connection bryts. (ändra connected_text)
-- Skriv den andra användarens namn på fönstret
-- Fixa design för AlertResponse
-- Implementera skicka meddelande funktion
-- Med Panel och ObservableCollection. Läs meddelanden och skriv ut dem på skärmen
+- [x] Bryt ut Connect till två olika knappar
+- [x] Ger återkoppling när inbjudan nekas
+- [x] Fixa design för AlertResponse
+- [x] Implementera skicka meddelande funktion
+- [ ] Ge återkoppling när connection bryts. (ändra connected_text)
+- [ ] Med Panel och ObservableCollection. Läs meddelanden och skriv ut dem på skärmen
 

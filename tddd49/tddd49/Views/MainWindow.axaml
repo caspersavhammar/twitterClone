@@ -15,7 +15,7 @@
                 <Span Foreground="Black">Welcome to Shut App</Span>
             </TextBlock>
         </Border>
-        <Grid ColumnDefinitions="1*, 5*">
+        <Grid ColumnDefinitions="1*, 5*, 1*">
             <StackPanel Grid.Column="0">
                 <Label Margin="10" HorizontalAlignment="Left" Foreground="Black">
                     Display Name
@@ -56,12 +56,22 @@
                         Test
                     </TextBlock>
                     <Grid Grid.Row="1" Margin="10" ColumnDefinitions="11*, 1*">
-                        <TextBox Grid.Column="0" HorizontalContentAlignment="Stretch" Background="AntiqueWhite" BorderBrush="Black" CornerRadius="20" />
-                        <Button Grid.Column="1" Margin="5,0,0,0" CornerRadius="10">
-                            <TextBlock HorizontalAlignment="Center" Foreground="Black">Connect</TextBlock>
+                        <TextBox Grid.Column="0" Text="{Binding message}" HorizontalContentAlignment="Stretch" Background="AntiqueWhite" BorderBrush="Black" CornerRadius="20" />
+                        <Button Grid.Column="1" Command="{Binding send_message}" Margin="5,0,0,0" CornerRadius="10">
+                            <TextBlock HorizontalAlignment="Center" Foreground="Black">Send</TextBlock>
                         </Button>
                     </Grid>
                 </Grid>
+            </Border>
+            <Border Grid.Column="2" Margin="0,10,10,10" BorderThickness="2" BorderBrush="Black" CornerRadius="20" Background="AntiqueWhite">
+                <StackPanel>
+                    <TextBlock Margin="10">
+                        <Span Foreground="Black">Chat History:</Span>
+                    </TextBlock>
+                    <StackPanel>
+
+                    </StackPanel>
+                </StackPanel>
             </Border>
         </Grid>
     </StackPanel>

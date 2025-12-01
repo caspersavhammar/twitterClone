@@ -1,4 +1,4 @@
-<Window x:Class="tddd49.Views.AlertResponse" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="using:tddd49.ViewModels" Title="tddd49" Width="200"
+<Window x:Class="tddd49.Views.AlertResponse" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:vm="using:tddd49.ViewModels" Title="tddd49" Width="300"
         Height="100" x:DataType="vm:AlertResponseViewModel" CanResize="False" Icon="/Assets/avalonia-logo.ico" mc:Ignorable="d">
 
     <Design.DataContext>
@@ -9,28 +9,12 @@
         <vm:AlertResponseViewModel />
     </Design.DataContext>
 
-    <StackPanel Background="BurlyWood">
-        <Border Margin="10" Padding="10" Background="AntiqueWhite" BorderBrush="Black" BorderThickness="1" CornerRadius="10">
+    <StackPanel VerticalAlignment="Center" Background="BurlyWood">
+        <Border HorizontalAlignment="Center" Margin="10" Padding="10" Background="AntiqueWhite" BorderBrush="Black" BorderThickness="1" CornerRadius="10">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Span Foreground="Black">A client is trying to connect</Span>
+                <Span Foreground="Black">Waiting for Server to respond</Span>
             </TextBlock>
         </Border>
-        <Grid ColumnDefinitions="1*, 1*">
-            <StackPanel Grid.Column="0">
-                <Button Command="{Binding sendResponse}" CornerRadius="10">
-                    <TextBlock HorizontalAlignment="Center" Background="Green" Foreground="White">
-                        Accept
-                    </TextBlock>
-                </Button>
-            </StackPanel>
-            <StackPanel Grid.Column="1">
-                <Button Command="{Binding sendResponse}" CornerRadius="10">
-                    <TextBlock HorizontalAlignment="Center" Background="Red" Foreground="White">
-                        Deny
-                    </TextBlock>
-                </Button>
-            </StackPanel>
-        </Grid>
     </StackPanel>
 
 

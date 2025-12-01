@@ -22,6 +22,8 @@ namespace tddd49.ViewModels
         private string _port;
         private string _username;
         private string _connected_text;
+        private string _message;
+
         public string ip_address {
             get => _ip_address;
             set {
@@ -52,8 +54,18 @@ namespace tddd49.ViewModels
                 OnPropertyChanged("connected_text");
             }
         }
+
+        public string message {
+            get => _message;
+            set {
+                _message = value;
+                OnPropertyChanged("message");
+            }
+        }
+
         public ICommand connect { get; }
         public ICommand start { get; }
+        public ICommand send_message { get; }
 
         public MainWindowViewModel(NetworkManager nm)
         {
@@ -63,6 +75,7 @@ namespace tddd49.ViewModels
 
             connect = new RelayCommand(ConnectConnection);
             start = new RelayCommand(StartConnection);
+            send_message = new RelayCommand(send_char);
         }
 
         public MainWindowViewModel()
@@ -89,6 +102,9 @@ namespace tddd49.ViewModels
             await network_manager.connectConnection(casted_address, casted_port);
         }
 
+        private async void send_char() {
+            await network_manager.sendChar(_message);
+        }
     }
 
 }
