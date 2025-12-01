@@ -34,6 +34,13 @@
                 <TextBox Margin="10,0,0,0" HorizontalContentAlignment="Stretch" Background="DimGray" BorderBrush="Black" CornerRadius="20" Foreground="white"
                          Text="{Binding port}" />
                 <Button Margin="10,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Command="{Binding start}"
+                        CornerRadius="20">
+                    <Viewbox>
+                        <TextBlock HorizontalAlignment="Center" Foreground="Black">Start</TextBlock>
+                    </Viewbox>
+                </Button>
+                <Button Margin="10,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
                         Command="{Binding connect}"
                         CornerRadius="20">
                     <Viewbox>

@@ -36,12 +36,12 @@ namespace tddd49.ViewModels
         {
             NetworkStream stream = network_manager.stream;
             if (response == "1") {
-                Console.WriteLine("I am the one the one the one");
                 var responseBytes = Encoding.UTF8.GetBytes(response);
                 await stream.WriteAsync(responseBytes);
             }
             else if (response == "0") {
-                Console.WriteLine("I am the two the two the two");
+                var responseBytes = Encoding.UTF8.GetBytes(response);
+                await stream.WriteAsync(responseBytes);
             }
         }
     }

@@ -53,6 +53,7 @@ namespace tddd49.ViewModels
             }
         }
         public ICommand connect { get; }
+        public ICommand start { get; }
 
         public MainWindowViewModel(NetworkManager nm)
         {
@@ -60,7 +61,8 @@ namespace tddd49.ViewModels
             network_manager = nm;
             network_manager.PropertyChanged += myModel_PropertyChanged;
 
-            connect = new RelayCommand(StartConnection);
+            connect = new RelayCommand(ConnectConnection);
+            start = new RelayCommand(StartConnection);
         }
 
         public MainWindowViewModel()
@@ -79,6 +81,12 @@ namespace tddd49.ViewModels
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
             await network_manager.startConnection(casted_address, casted_port);
+        }
+
+        private async void ConnectConnection() {
+            IPAddress casted_address = IPAddress.Parse(_ip_address);
+            int casted_port = int.Parse(_port);
+            await network_manager.connectConnection(casted_address, casted_port);
         }
 
     }

@@ -31,66 +31,65 @@ namespace tddd49.Models {
         }
 
         public async Task startConnection(IPAddress address, int PORT) {
-            bool secondTry = false;
             IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
             TcpListener server = new TcpListener(ipEndPoint);
-            TcpClient endPoint = null;
             try
             {
                 server.Start();
                 Console.WriteLine("Start listening...");
                 Connected_text = "Server started";
-                endPoint = await server.AcceptTcpClientAsync();
-                Console.WriteLine(endPoint);
-                var _alert_window = new AlertRequest(this);
-                _alert_window.Show();
-                stream = endPoint.GetStream();
-                if ( await acceptConnection()) {
-                    Connected_text = "Server connected";
+                while (true)
+                {
+                    TcpClient endPoint = await server.AcceptTcpClientAsync();
+                    var _alert_window = new AlertRequest(this);
+                    _alert_window.Show();
+                    stream = endPoint.GetStream();
+                    if ( await acceptConnection()) {
+                        Connected_text = "Client connected";
+                        _alert_window.Close();
+                        break;
+                    }
                     _alert_window.Close();
-                }
-                else {
-                    endPoint.Close();
-                    return;
                 }
                 Console.WriteLine("Connection accepted!");
                 await handleConnection().ConfigureAwait(false);
             }
             catch
             {
-                secondTry = true;
+                Connected_text = "Error: Active server on port";
             }
+        }
 
-            if (secondTry)
+        public async Task connectConnection(IPAddress address, int PORT) {
+            IPEndPoint ipEndPoint = new IPEndPoint(address, PORT);
+            TcpClient endPoint = new TcpClient();
+            try
             {
-                endPoint = new TcpClient();
-                try
-                {
-                    Console.WriteLine("Connecting to the server...");
-                    await endPoint.ConnectAsync(ipEndPoint);
-                    var _alert_window = new AlertResponse(this);
-                    _alert_window.Show();
-                    stream = endPoint.GetStream();
-                    if ( await acceptConnection()) {
-                        var responseBytes = Encoding.UTF8.GetBytes("1");
-                        await stream.WriteAsync(responseBytes);
-                        Connected_text = "Server connected";
-                        _alert_window.Close();
-                    }
-                    else {
-                        endPoint.Close();
-                        return;
-                    }
-                    Console.WriteLine("Connection established!");
-                    await handleConnection().ConfigureAwait(false);
+                Console.WriteLine("Connecting to the server...");
+                await endPoint.ConnectAsync(ipEndPoint);
+                var _alert_window = new AlertResponse(this);
+                _alert_window.Show();
+                stream = endPoint.GetStream();
+                if ( await acceptConnection()) {
+                    var responseBytes = Encoding.UTF8.GetBytes("1");
+                    await stream.WriteAsync(responseBytes);
+                    Connected_text = "Server connected";
+                    _alert_window.Close();
                 }
-                finally
-                {
-                    Console.WriteLine("If you sea this its to late");
+                else {
+                    _alert_window.Close();
+                    Connected_text = "Error: No server on port";
                     endPoint.Close();
+                    return;
                 }
+                Console.WriteLine("Connection established!");
+                await handleConnection().ConfigureAwait(false);
             }
-
+            finally
+            {
+                Console.WriteLine("If you sea this its to late");
+                endPoint.Close();
+            }
         }
 
         private async Task<bool> acceptConnection()
