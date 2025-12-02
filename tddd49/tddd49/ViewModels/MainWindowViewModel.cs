@@ -66,6 +66,7 @@ namespace tddd49.ViewModels
         public ICommand connect { get; }
         public ICommand start { get; }
         public ICommand send_message { get; }
+        public ICommand close_connection { get; }
 
         public MainWindowViewModel(NetworkManager nm)
         {
@@ -76,6 +77,7 @@ namespace tddd49.ViewModels
             connect = new RelayCommand(ConnectConnection);
             start = new RelayCommand(StartConnection);
             send_message = new RelayCommand(send_char);
+            close_connection = new RelayCommand(CloseConnection);
         }
 
         public MainWindowViewModel()
@@ -104,6 +106,11 @@ namespace tddd49.ViewModels
 
         private async void send_char() {
                 await network_manager.sendChar(_message);
+        }
+
+        private void CloseConnection()
+        {
+            network_manager.endPoint.Close();
         }
     }
 

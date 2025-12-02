@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
 using tddd49.Views;
@@ -10,6 +11,7 @@ namespace tddd49.Models {
     public class NetworkManager : INotifyPropertyChanged
     {
         public NetworkStream stream;
+        public TcpClient endPoint;
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName = "") {
@@ -54,17 +56,20 @@ namespace tddd49.Models {
                 Connected_text = "Server started";
                 while (true)
                 {
-                    TcpClient endPoint = await server.AcceptTcpClientAsync();
+                    endPoint = await server.AcceptTcpClientAsync();
                     var _alert_window = new AlertRequest(this);
                     _alert_window.Show();
                     stream = endPoint.GetStream();
-                    if ( await acceptConnection()) {
+                    if (await acceptConnection())
+                    {
                         Connected_text = "Client connected";
                         _alert_window.Close();
                         break;
                     }
+
                     _alert_window.Close();
                 }
+
                 Console.WriteLine("Connection accepted!");
                 await handleConnection().ConfigureAwait(false);
             }
@@ -72,12 +77,14 @@ namespace tddd49.Models {
             {
                 Connected_text = "Error: Active server on port";
             }
+            finally {
+                server.Stop();
+            }
         }
 
         public async Task connectConnection(IPAddress address, int PORT)
         {
             IPEndPoint ipEndPoint = null;
-            TcpClient endPoint = null;
             
             try
             {
@@ -135,13 +142,23 @@ namespace tddd49.Models {
         }
 
         private async Task handleConnection() {
-
-            while (true) {
-                var buffer = new byte[1_024];
-                int received = await stream.ReadAsync(buffer);
-                var message_from_stream = Encoding.UTF8.GetString(buffer, 0, received);
-                Console.WriteLine($"Message received: \"{message_from_stream}\"");
-                this.Message = message_from_stream;
+            try
+            {
+                while (endPoint.Connected) {
+                    var buffer = new byte[1_024];
+                    int received = await stream.ReadAsync(buffer);
+                    var message_from_stream = Encoding.UTF8.GetString(buffer, 0, received);
+                    Console.WriteLine($"Message received: \"{message_from_stream}\"");
+                    if (message_from_stream == "") {
+                        throw new Exception("Error: No client connected");
+                    }
+                    this.Message = message_from_stream;
+                }
+            }
+            catch (Exception e)
+            {
+                Connected_text = "Client disconnected";
+                Console.WriteLine(e);
             }
         }
         public async Task sendChar(string str) {
