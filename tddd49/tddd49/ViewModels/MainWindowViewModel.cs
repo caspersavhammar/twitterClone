@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using CommunityToolkit.Mvvm.Input;
+using ReactiveUI;
 using tddd49.Models;
 
 namespace tddd49.ViewModels
@@ -66,7 +67,6 @@ namespace tddd49.ViewModels
                 OnPropertyChanged("message");
             }
         }
-
         public ObservableCollection<MessageManager.message_template> message_list { get; set; }
 
         public ICommand connect { get; }
@@ -74,17 +74,13 @@ namespace tddd49.ViewModels
         public ICommand send_message { get; }
         public ICommand close_connection { get; }
 
-        public MainWindowViewModel(NetworkManager nm) {
+        public MainWindowViewModel(NetworkManager nm, MessageManager mm) {
             connected_text = "";
+            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>());
             network_manager = nm;
+            message_manager = mm;
             network_manager.PropertyChanged += myModel_PropertyChanged;
-            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>{
-                new MessageManager.message_template("Meddelande1", "Din mamma", "Din pappa"),
-                new MessageManager.message_template("Meddelande2", "Din mamma", "Din pappa"),
-                new MessageManager.message_template("Meddelande3", "Din mamma", "Din pappa"),
-                new MessageManager.message_template("Meddelande4", "Din mamma", "Din pappa"),
-                new MessageManager.message_template("Jag är din far", "Gorbon", "Capo"),
-            });
+            message_manager.PropertyChanged += myModel_PropertyChanged;
 
             connect = new RelayCommand(ConnectConnection);
             start = new RelayCommand(StartConnection);
@@ -96,12 +92,17 @@ namespace tddd49.ViewModels
 
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == "connected_text") {
-                var text = network_manager.Connected_text;
-                connected_text = text;
+                connected_text = network_manager.Connected_text;
+            } else if (e.PropertyName == "message_list")
+            {
+                message_list = message_manager.message_list;
             }
         }
 
-        private async void StartConnection() {
+        private async void StartConnection()
+        {
+            message_manager.add_shit("hej hej", "Gorbin", "Capo");
+            Console.WriteLine(message_list.ToString());
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
             await network_manager.startConnection(casted_address, casted_port);
