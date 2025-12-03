@@ -28,6 +28,7 @@
                 </Label>
                 <TextBox Margin="10,0,0,0" HorizontalContentAlignment="Stretch" Background="DimGray" BorderBrush="Black" CornerRadius="20" Foreground="white"
                          Text="{Binding ip_address}" />
+                
                 <Label Margin="10" HorizontalAlignment="Left" Foreground="Black">
                     PORT
                 </Label>
@@ -52,12 +53,25 @@
             </StackPanel>
             <Border Grid.Column="1" Margin="10" Background="AntiqueWhite" BorderBrush="Black" BorderThickness="2" CornerRadius="20">
                 <Grid RowDefinitions="8*, 1*">
-                    <Panel Grid.Row="0" >
-                        
-                    </Panel>
+                    <StackPanel Grid.Row="0" >
+                        <ItemsControl ItemsSource="{Binding message_list}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="10,10,0,0"
+                                            CornerRadius="5"
+                                            BorderBrush="Gray" BorderThickness="0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="0,0,5, 0" Foreground="red" Text="{Binding From}"/>
+                                            <TextBlock Foreground="Black" Text="{Binding Message}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                     <Grid Grid.Row="1" Margin="10" ColumnDefinitions="11*, 1*">
                         <TextBox Grid.Column="0" Text="{Binding message}" HorizontalContentAlignment="Stretch" Background="AntiqueWhite" BorderBrush="Black" CornerRadius="20" />
-                        <Button Grid.Column="1" Command="{Binding send_message}" Margin="5,0,0,0" CornerRadius="10">
+                        <Button Grid.Column="1" Background="Black" Command="{Binding send_message}" Margin="5,0,0,0" CornerRadius="10">
                             <TextBlock HorizontalAlignment="Center" Foreground="Black">Send</TextBlock>
                         </Button>
                     </Grid>

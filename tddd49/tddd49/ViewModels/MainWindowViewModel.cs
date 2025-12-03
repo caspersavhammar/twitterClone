@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 using CommunityToolkit.Mvvm.Input;
 using tddd49.Models;
 
@@ -63,21 +66,32 @@ namespace tddd49.ViewModels
             }
         }
 
+        public ObservableCollection<MessageModel.message_template> message_list { get; set; }
+
         public ICommand connect { get; }
         public ICommand start { get; }
         public ICommand send_message { get; }
         public ICommand close_connection { get; }
+        public ICommand choose_color { get; }
 
         public MainWindowViewModel(NetworkManager nm)
         {
             connected_text = "";
             network_manager = nm;
             network_manager.PropertyChanged += myModel_PropertyChanged;
+            message_list = new ObservableCollection<MessageModel.message_template>(new List<MessageModel.message_template>{
+                new MessageModel.message_template("Meddelande1", "Din mamma", "Din pappa"),
+                new MessageModel.message_template("Meddelande2", "Din mamma", "Din pappa"),
+                new MessageModel.message_template("Meddelande3", "Din mamma", "Din pappa"),
+                new MessageModel.message_template("Meddelande4", "Din mamma", "Din pappa"),
+                new MessageModel.message_template("Jag är din far", "Gorbon", "Capo"),
+            });
 
             connect = new RelayCommand(ConnectConnection);
             start = new RelayCommand(StartConnection);
             send_message = new RelayCommand(send_char);
             close_connection = new RelayCommand(CloseConnection);
+            choose_color = new RelayCommand(ChooseColor);
         }
 
         public MainWindowViewModel()
@@ -112,6 +126,7 @@ namespace tddd49.ViewModels
         {
             network_manager.endPoint.Close();
         }
+
     }
 
 }

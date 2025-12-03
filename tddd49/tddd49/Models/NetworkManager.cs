@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 using tddd49.Views;
 
 namespace tddd49.Models {
-    public class NetworkManager : INotifyPropertyChanged
-    {
+    public class NetworkManager : INotifyPropertyChanged {
         public NetworkStream stream;
         public TcpClient endPoint;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -32,36 +31,30 @@ namespace tddd49.Models {
             set { connected_text = value; OnPropertyChanged("connected_text"); }
         }
 
-        public async Task startConnection(IPAddress address, int PORT)
-        {
+        public async Task startConnection(IPAddress address, int PORT) {
 
             IPEndPoint ipEndPoint = null;
             TcpListener server = null;
             
-            try
-            {
+            try {
                 ipEndPoint = new IPEndPoint(address, PORT);
                 server = new TcpListener(ipEndPoint);
             }
-            catch
-            {
+            catch {
                 Connected_text = "Error: Need to specify address and PORT";
                 return;
             }
 
-            try
-            {
+            try {
                 server.Start();
                 Console.WriteLine("Start listening...");
                 Connected_text = "Server started";
-                while (true)
-                {
+                while (true) {
                     endPoint = await server.AcceptTcpClientAsync();
                     var _alert_window = new AlertRequest(this);
                     _alert_window.Show();
                     stream = endPoint.GetStream();
-                    if (await acceptConnection())
-                    {
+                    if (await acceptConnection()) {
                         Connected_text = "Client connected";
                         _alert_window.Close();
                         break;
@@ -73,8 +66,7 @@ namespace tddd49.Models {
                 Console.WriteLine("Connection accepted!");
                 await handleConnection().ConfigureAwait(false);
             }
-            catch
-            {
+            catch {
                 Connected_text = "Error: Active server on port";
             }
             finally {
@@ -82,23 +74,19 @@ namespace tddd49.Models {
             }
         }
 
-        public async Task connectConnection(IPAddress address, int PORT)
-        {
+        public async Task connectConnection(IPAddress address, int PORT) {
             IPEndPoint ipEndPoint = null;
             
-            try
-            {
+            try {
                 ipEndPoint = new IPEndPoint(address, PORT);
                 endPoint = new TcpClient();
             }
-            catch
-            {
+            catch {
                 Connected_text = "Error: Need to specify address and PORT";
                 return;
             }
 
-            try
-            {
+            try {
                 Console.WriteLine("Connecting to the server...");
                 await endPoint.ConnectAsync(ipEndPoint);
                 var _alert_window = new AlertResponse();
@@ -119,15 +107,13 @@ namespace tddd49.Models {
                 Console.WriteLine("Connection established!");
                 await handleConnection().ConfigureAwait(false);
             }
-            finally
-            {
+            finally {
                 Console.WriteLine("If you sea this its to late");
                 endPoint.Close();
             }
         }
 
-        private async Task<bool> acceptConnection()
-        {
+        private async Task<bool> acceptConnection() {
             
             var buffer = new byte[1_024];
             int received = await stream.ReadAsync(buffer);
@@ -142,8 +128,7 @@ namespace tddd49.Models {
         }
 
         private async Task handleConnection() {
-            try
-            {
+            try {
                 while (endPoint.Connected) {
                     var buffer = new byte[1_024];
                     int received = await stream.ReadAsync(buffer);
@@ -163,12 +148,10 @@ namespace tddd49.Models {
         }
         public async Task sendChar(string str) {
             var buffer = Encoding.UTF8.GetBytes(str);
-            try
-            {
+            try {
                 await stream.WriteAsync(buffer, 0, str.Length);
             }
-            catch
-            {
+            catch {
                 Connected_text = "Error: No established connection";
             }
         }
