@@ -1,9 +1,7 @@
 
 
-namespace tddd49.Models
-{
-    public class MessageModel
-    {
+namespace tddd49.Models {
+    public class MessageManager {
         public struct message_template {
             public string Message { get; set; }
             public string From { get; set; }
@@ -17,6 +15,8 @@ namespace tddd49.Models
                 //Time = time;
             }
         }
+
+        
     }
 };
 

@@ -21,6 +21,7 @@ namespace tddd49.ViewModels
         }
 
         NetworkManager network_manager { get; set; }
+        MessageManager message_manager { get; set; }
         private string _ip_address;
         private string _port;
         private string _username;
@@ -66,38 +67,32 @@ namespace tddd49.ViewModels
             }
         }
 
-        public ObservableCollection<MessageModel.message_template> message_list { get; set; }
+        public ObservableCollection<MessageManager.message_template> message_list { get; set; }
 
         public ICommand connect { get; }
         public ICommand start { get; }
         public ICommand send_message { get; }
         public ICommand close_connection { get; }
-        public ICommand choose_color { get; }
 
-        public MainWindowViewModel(NetworkManager nm)
-        {
+        public MainWindowViewModel(NetworkManager nm) {
             connected_text = "";
             network_manager = nm;
             network_manager.PropertyChanged += myModel_PropertyChanged;
-            message_list = new ObservableCollection<MessageModel.message_template>(new List<MessageModel.message_template>{
-                new MessageModel.message_template("Meddelande1", "Din mamma", "Din pappa"),
-                new MessageModel.message_template("Meddelande2", "Din mamma", "Din pappa"),
-                new MessageModel.message_template("Meddelande3", "Din mamma", "Din pappa"),
-                new MessageModel.message_template("Meddelande4", "Din mamma", "Din pappa"),
-                new MessageModel.message_template("Jag är din far", "Gorbon", "Capo"),
+            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>{
+                new MessageManager.message_template("Meddelande1", "Din mamma", "Din pappa"),
+                new MessageManager.message_template("Meddelande2", "Din mamma", "Din pappa"),
+                new MessageManager.message_template("Meddelande3", "Din mamma", "Din pappa"),
+                new MessageManager.message_template("Meddelande4", "Din mamma", "Din pappa"),
+                new MessageManager.message_template("Jag är din far", "Gorbon", "Capo"),
             });
 
             connect = new RelayCommand(ConnectConnection);
             start = new RelayCommand(StartConnection);
             send_message = new RelayCommand(send_char);
             close_connection = new RelayCommand(CloseConnection);
-            choose_color = new RelayCommand(ChooseColor);
         }
 
-        public MainWindowViewModel()
-        {
-            
-        }
+        public MainWindowViewModel() {}
 
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == "connected_text") {
@@ -122,8 +117,7 @@ namespace tddd49.ViewModels
                 await network_manager.sendChar(_message);
         }
 
-        private void CloseConnection()
-        {
+        private void CloseConnection() {
             network_manager.endPoint.Close();
         }
 
