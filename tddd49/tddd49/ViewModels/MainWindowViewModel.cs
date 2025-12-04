@@ -123,7 +123,7 @@ namespace tddd49.ViewModels
 
         private async void send_char() {
                 message_list.Add(new MessageManager.message_template(_send_message, _username));
-                await network_manager.sendChar(_send_message + ";" +  _username);
+                await network_manager.sendChar(_send_message + "Ω" +  _username);
                 send_message = "";
         }
 
