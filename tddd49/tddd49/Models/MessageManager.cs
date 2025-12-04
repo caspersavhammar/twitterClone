@@ -25,7 +25,7 @@ namespace tddd49.Models {
 
         public static message_template message_to_template(string message)
         {
-            string[] contents = message.Split("Ω");
+            string[] contents = message.Split("^");
             return new message_template(contents[0], contents[1]);
         }
     }

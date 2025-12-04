@@ -13,6 +13,8 @@ namespace tddd49.ViewModels
     {
         public MainWindowViewModel(NetworkManager nm) {
             status_message = "";
+            ip_address = "127.0.0.1";
+            port = "13000";
             message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>());
             network_manager = nm;
             network_manager.PropertyChanged += myModel_PropertyChanged;
@@ -90,8 +92,7 @@ namespace tddd49.ViewModels
         public ICommand send_message_button { get; }
         public ICommand disconnect { get; }
 
-        private async void Start()
-        {
+        private async void Start() {
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
             await network_manager.StartConnection(casted_address, casted_port);
@@ -105,7 +106,7 @@ namespace tddd49.ViewModels
 
         private async void SendMessage() {
                 message_list.Add(new MessageManager.message_template(_send_message, _username));
-                await network_manager.SendMessage(_send_message + "Ω" +  _username);
+                await network_manager.SendMessage(_send_message + "^" +  _username);
                 send_message = "";
         }
 
