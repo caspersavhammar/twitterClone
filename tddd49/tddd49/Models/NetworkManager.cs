@@ -140,8 +140,7 @@ namespace tddd49.Models {
                     this.Message = message_from_stream;
                 }
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Connected_text = "Client disconnected";
                 Console.WriteLine(e);
             }

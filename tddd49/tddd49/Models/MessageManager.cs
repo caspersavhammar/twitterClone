@@ -20,37 +20,20 @@ namespace tddd49.Models {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        public ObservableCollection<message_template> message_list { get; set; }
-        public MessageManager()
-        {
-            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>{
-                new message_template("Meddelande1", "Din mamma", "Din pappa"),
-                new message_template("Meddelande2", "Din mamma", "Din pappa"),
-                new message_template("Meddelande3", "Din mamma", "Din pappa"),
-                new message_template("Meddelande4", "Din mamma", "Din pappa"),
-                new message_template("Jag är din far", "Gorbon", "Capo"),
-            });
-        }
+        
+        public MessageManager() {}
 
-        public void add_shit(string ett, string två, string tre)
-        {
-            message_list.Add(new message_template(ett, två, tre));
-            Console.WriteLine(message_list.ToString());
-        }
         public struct message_template {
             public string Message { get; set; }
             public string From { get; set; }
-            public string To { get; set; }
             //public string Time { get; set; }
 
-            public message_template(string message, string from, string to) {
+            public message_template(string message, string from) {
                 Message = message;
                 From = from;
-                To = to;
                 //Time = time;
             }
         }
-
     }
 };
 

@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Avalonia.Markup.Xaml.MarkupExtensions;
 using CommunityToolkit.Mvvm.Input;
-using ReactiveUI;
 using tddd49.Models;
 
 namespace tddd49.ViewModels
@@ -76,11 +73,13 @@ namespace tddd49.ViewModels
 
         public MainWindowViewModel(NetworkManager nm, MessageManager mm) {
             connected_text = "";
-            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>());
+            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>
+            {
+                new MessageManager.message_template("meddelande", "xX_Capo_Xx_DemonSl3yer")
+            });
             network_manager = nm;
             message_manager = mm;
             network_manager.PropertyChanged += myModel_PropertyChanged;
-            message_manager.PropertyChanged += myModel_PropertyChanged;
 
             connect = new RelayCommand(ConnectConnection);
             start = new RelayCommand(StartConnection);
@@ -93,16 +92,11 @@ namespace tddd49.ViewModels
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == "connected_text") {
                 connected_text = network_manager.Connected_text;
-            } else if (e.PropertyName == "message_list")
-            {
-                message_list = message_manager.message_list;
             }
         }
 
         private async void StartConnection()
         {
-            message_manager.add_shit("hej hej", "Gorbin", "Capo");
-            Console.WriteLine(message_list.ToString());
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
             await network_manager.startConnection(casted_address, casted_port);
@@ -115,7 +109,9 @@ namespace tddd49.ViewModels
         }
 
         private async void send_char() {
+                message_list.Add(new MessageManager.message_template(_message, _username));
                 await network_manager.sendChar(_message);
+                message = "";
         }
 
         private void CloseConnection() {
