@@ -24,7 +24,8 @@ namespace tddd49.ViewModels
         private string _port;
         private string _username;
         private string _connected_text;
-        private string _message;
+        private string _send_message;
+        private string _received_message;
 
         public string ip_address {
             get => _ip_address;
@@ -57,33 +58,43 @@ namespace tddd49.ViewModels
             }
         }
 
-        public string message {
-            get => _message;
-            set {
-                _message = value;
-                OnPropertyChanged("message");
+        public string received_message {
+            get => _received_message;
+            set
+            {
+                _received_message = value;
+                MessageManager.message_template message = MessageManager.message_to_template(value);
+                message_list.Add(message);
+                OnPropertyChanged("received_message");
             }
         }
+
+        public string send_message
+        {
+            get => _send_message;
+            set {
+                _send_message = value;
+                OnPropertyChanged("send_message");
+            }
+        }
+
         public ObservableCollection<MessageManager.message_template> message_list { get; set; }
 
         public ICommand connect { get; }
         public ICommand start { get; }
-        public ICommand send_message { get; }
+        public ICommand send_message_button { get; }
         public ICommand close_connection { get; }
 
         public MainWindowViewModel(NetworkManager nm, MessageManager mm) {
             connected_text = "";
-            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>
-            {
-                new MessageManager.message_template("meddelande", "xX_Capo_Xx_DemonSl3yer")
-            });
+            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>());
             network_manager = nm;
             message_manager = mm;
             network_manager.PropertyChanged += myModel_PropertyChanged;
 
             connect = new RelayCommand(ConnectConnection);
             start = new RelayCommand(StartConnection);
-            send_message = new RelayCommand(send_char);
+            send_message_button = new RelayCommand(send_char);
             close_connection = new RelayCommand(CloseConnection);
         }
 
@@ -92,6 +103,8 @@ namespace tddd49.ViewModels
         private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             if (e.PropertyName == "connected_text") {
                 connected_text = network_manager.Connected_text;
+            } else if (e.PropertyName == "received_message") {
+                received_message = network_manager.Received_message;
             }
         }
 
@@ -109,9 +122,9 @@ namespace tddd49.ViewModels
         }
 
         private async void send_char() {
-                message_list.Add(new MessageManager.message_template(_message, _username));
-                await network_manager.sendChar(_message);
-                message = "";
+                message_list.Add(new MessageManager.message_template(_send_message, _username));
+                await network_manager.sendChar(_send_message + ";" +  _username);
+                send_message = "";
         }
 
         private void CloseConnection() {

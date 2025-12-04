@@ -19,16 +19,16 @@ namespace tddd49.Models {
             }
         }
 
-        private string message;
-        public string Message {
-            get { return message; }
-            set { message = value; OnPropertyChanged("Message"); }
-        }
-
         private string connected_text;
         public string Connected_text {
             get { return connected_text; }
             set { connected_text = value; OnPropertyChanged("connected_text"); }
+        }
+
+        private string received_message;
+        public string Received_message {
+            get { return received_message; }
+            set { received_message = value; OnPropertyChanged("received_message");}
         }
 
         public async Task startConnection(IPAddress address, int PORT) {
@@ -118,7 +118,6 @@ namespace tddd49.Models {
             var buffer = new byte[1_024];
             int received = await stream.ReadAsync(buffer);
             var message_from_stream = Encoding.UTF8.GetString(buffer, 0, received);
-            Console.WriteLine($"Message received from accept window: \"{message_from_stream}\"");
 
             if (message_from_stream == "1") {
                 return true;
@@ -137,7 +136,7 @@ namespace tddd49.Models {
                     if (message_from_stream == "") {
                         throw new Exception("Error: No client connected");
                     }
-                    this.Message = message_from_stream;
+                    Received_message = message_from_stream;
                 }
             }
             catch (Exception e) {

@@ -11,28 +11,22 @@ using System.Threading.Tasks;
 using tddd49.Views;
 
 namespace tddd49.Models {
-    public class MessageManager : INotifyPropertyChanged {
-        
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName = "") {
-            if (PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        
-        public MessageManager() {}
+    public class MessageManager{
 
         public struct message_template {
             public string Message { get; set; }
             public string From { get; set; }
-            //public string Time { get; set; }
 
             public message_template(string message, string from) {
                 Message = message;
                 From = from;
-                //Time = time;
             }
+        }
+
+        public static message_template message_to_template(string message)
+        {
+            string[] contents = message.Split(";");
+            return new message_template(contents[0], contents[1]);
         }
     }
 };
