@@ -13,24 +13,22 @@ namespace tddd49.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged(string property_name)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property_name));
         }
 
         NetworkManager network_manager { get; set; }
 
-        public ICommand sendRequest { get; }
+        public ICommand send_request { get; }
 
         public AlertRequestViewModel(NetworkManager nm)
         {
             network_manager = nm;
-            sendRequest = new RelayCommand<string>(SendRequest);
+            send_request = new RelayCommand<string>(SendRequest);
         }
 
-        public AlertRequestViewModel()
-        {
-        }
+        public AlertRequestViewModel() {}
 
         private async void SendRequest(string response)
         {

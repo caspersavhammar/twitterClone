@@ -9,29 +9,23 @@ using tddd49.Views;
 
 namespace tddd49.Models {
     public class NetworkManager : INotifyPropertyChanged {
+
         public NetworkStream stream;
         public TcpClient endPoint;
-        public event PropertyChangedEventHandler PropertyChanged;
+        private string _status_message;
+        private string _received_message;
 
-        private void OnPropertyChanged(string propertyName = "") {
-            if (PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+        public string status_message {
+            get { return _status_message; }
+            set { _status_message = value; OnPropertyChanged("status_message"); }
         }
 
-        private string connected_text;
-        public string Connected_text {
-            get { return connected_text; }
-            set { connected_text = value; OnPropertyChanged("connected_text"); }
+        public string received_message {
+            get { return _received_message; }
+            set { _received_message = value; OnPropertyChanged("received_message");}
         }
 
-        private string received_message;
-        public string Received_message {
-            get { return received_message; }
-            set { received_message = value; OnPropertyChanged("received_message");}
-        }
-
-        public async Task startConnection(IPAddress address, int PORT) {
+        public async Task StartConnection(IPAddress address, int PORT) {
 
             IPEndPoint ipEndPoint = null;
             TcpListener server = null;
@@ -41,21 +35,21 @@ namespace tddd49.Models {
                 server = new TcpListener(ipEndPoint);
             }
             catch {
-                Connected_text = "Error: Need to specify address and PORT";
+                status_message = "Error: Need to specify address and PORT";
                 return;
             }
 
             try {
                 server.Start();
                 Console.WriteLine("Start listening...");
-                Connected_text = "Server started";
+                status_message = "Server started";
                 while (true) {
                     endPoint = await server.AcceptTcpClientAsync();
                     var _alert_window = new AlertRequest(this);
                     _alert_window.Show();
                     stream = endPoint.GetStream();
-                    if (await acceptConnection()) {
-                        Connected_text = "Client connected";
+                    if (await AcceptConnection()) {
+                        status_message = "Client connected";
                         _alert_window.Close();
                         break;
                     }
@@ -64,48 +58,49 @@ namespace tddd49.Models {
                 }
 
                 Console.WriteLine("Connection accepted!");
-                await handleConnection().ConfigureAwait(false);
+                await HandleConnection().ConfigureAwait(false);
             }
             catch {
-                Connected_text = "Error: Active server on port";
+                status_message = "Error: Active server on port";
             }
             finally {
                 server.Stop();
             }
         }
 
-        public async Task connectConnection(IPAddress address, int PORT) {
+        public async Task Connect(IPAddress address, int PORT) {
             IPEndPoint ipEndPoint = null;
             
             try {
                 ipEndPoint = new IPEndPoint(address, PORT);
-                endPoint = new TcpClient();
             }
             catch {
-                Connected_text = "Error: Need to specify address and PORT";
+                status_message = "Error: Need to specify address and PORT";
                 return;
             }
 
-            try {
+            try
+            {
+                endPoint = new TcpClient();
                 Console.WriteLine("Connecting to the server...");
                 await endPoint.ConnectAsync(ipEndPoint);
                 var _alert_window = new AlertResponse();
                 _alert_window.Show();
                 stream = endPoint.GetStream();
-                if ( await acceptConnection()) {
+                if ( await AcceptConnection()) {
                     var responseBytes = Encoding.UTF8.GetBytes("1");
                     await stream.WriteAsync(responseBytes);
-                    Connected_text = "Server connected";
+                    status_message = "Server connected";
                     _alert_window.Close();
                 }
                 else {
                     _alert_window.Close();
-                    Connected_text = "Error: No server on port";
+                    status_message = "Error: No server on port";
                     endPoint.Close();
                     return;
                 }
                 Console.WriteLine("Connection established!");
-                await handleConnection().ConfigureAwait(false);
+                await HandleConnection().ConfigureAwait(false);
             }
             finally {
                 Console.WriteLine("If you sea this its to late");
@@ -113,7 +108,7 @@ namespace tddd49.Models {
             }
         }
 
-        private async Task<bool> acceptConnection() {
+        private async Task<bool> AcceptConnection() {
             
             var buffer = new byte[1_024];
             int received = await stream.ReadAsync(buffer);
@@ -126,31 +121,38 @@ namespace tddd49.Models {
             return false;
         }
 
-        private async Task handleConnection() {
+        private async Task HandleConnection() {
             try {
-                while (endPoint.Connected) {
+                while (true) {
                     var buffer = new byte[1_024];
                     int received = await stream.ReadAsync(buffer);
                     var message_from_stream = Encoding.UTF8.GetString(buffer, 0, received);
-                    Console.WriteLine($"Message received: \"{message_from_stream}\"");
                     if (message_from_stream == "") {
                         throw new Exception("Error: No client connected");
                     }
-                    Received_message = message_from_stream;
+                    received_message = message_from_stream;
                 }
             }
             catch (Exception e) {
-                Connected_text = "Client disconnected";
+                status_message = "Client disconnected";
                 Console.WriteLine(e);
             }
         }
-        public async Task sendChar(string str) {
+        public async Task SendMessage(string str) {
             var buffer = Encoding.UTF8.GetBytes(str);
             try {
                 await stream.WriteAsync(buffer, 0, str.Length);
             }
             catch {
-                Connected_text = "Error: No established connection";
+                status_message = "Error: No established connection";
+            }
+        }
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName = "") {
+            if (PropertyChanged != null) {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }

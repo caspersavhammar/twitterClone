@@ -18,7 +18,7 @@
         <Grid ColumnDefinitions="1*, 1*">
             <StackPanel Grid.Column="0" HorizontalAlignment="Center">
                 <Button Background="Green"
-                        Command="{Binding sendRequest}"
+                        Command="{Binding send_request}"
                         CommandParameter="1" CornerRadius="10">
                     <TextBlock HorizontalAlignment="Center" Foreground="White">
                         Accept
@@ -27,7 +27,7 @@
             </StackPanel>
             <StackPanel Grid.Column="1" HorizontalAlignment="Center">
                 <Button Background="Red"
-                        Command="{Binding sendRequest}"
+                        Command="{Binding send_request}"
                         CommandParameter="0" CornerRadius="10">
                     <TextBlock HorizontalAlignment="Center" Foreground="White">
                         Deny

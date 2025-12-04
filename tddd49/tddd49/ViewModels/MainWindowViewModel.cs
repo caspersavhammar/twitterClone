@@ -11,19 +11,25 @@ namespace tddd49.ViewModels
 {
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName = "") {
-            if (PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+        public MainWindowViewModel(NetworkManager nm) {
+            status_message = "";
+            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>());
+            network_manager = nm;
+            network_manager.PropertyChanged += myModel_PropertyChanged;
+
+            connect = new RelayCommand(Connect);
+            start = new RelayCommand(Start);
+            send_message_button = new RelayCommand(SendMessage);
+            disconnect = new RelayCommand(Disconnect);
         }
 
+        public MainWindowViewModel() {}
+
         NetworkManager network_manager { get; set; }
-        MessageManager message_manager { get; set; }
         private string _ip_address;
         private string _port;
         private string _username;
-        private string _connected_text;
+        private string _status_message;
         private string _send_message;
         private string _received_message;
 
@@ -42,7 +48,7 @@ namespace tddd49.ViewModels
             }
         }
 
-        public string username{
+        public string username {
             get => _username;
             set {
                 _username = value;
@@ -50,11 +56,11 @@ namespace tddd49.ViewModels
             }
         }
         
-        public string connected_text{
-            get =>_connected_text;
+        public string status_message {
+            get =>_status_message;
             set {
-                _connected_text = value;
-                OnPropertyChanged("connected_text");
+                _status_message = value;
+                OnPropertyChanged("status_message");
             }
         }
 
@@ -69,8 +75,7 @@ namespace tddd49.ViewModels
             }
         }
 
-        public string send_message
-        {
+        public string send_message {
             get => _send_message;
             set {
                 _send_message = value;
@@ -80,57 +85,48 @@ namespace tddd49.ViewModels
 
         public ObservableCollection<MessageManager.message_template> message_list { get; set; }
 
-        public ICommand connect { get; }
         public ICommand start { get; }
+        public ICommand connect { get; }
         public ICommand send_message_button { get; }
-        public ICommand close_connection { get; }
+        public ICommand disconnect { get; }
 
-        public MainWindowViewModel(NetworkManager nm, MessageManager mm) {
-            connected_text = "";
-            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>());
-            network_manager = nm;
-            message_manager = mm;
-            network_manager.PropertyChanged += myModel_PropertyChanged;
-
-            connect = new RelayCommand(ConnectConnection);
-            start = new RelayCommand(StartConnection);
-            send_message_button = new RelayCommand(send_char);
-            close_connection = new RelayCommand(CloseConnection);
-        }
-
-        public MainWindowViewModel() {}
-
-        private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            if (e.PropertyName == "connected_text") {
-                connected_text = network_manager.Connected_text;
-            } else if (e.PropertyName == "received_message") {
-                received_message = network_manager.Received_message;
-            }
-        }
-
-        private async void StartConnection()
+        private async void Start()
         {
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
-            await network_manager.startConnection(casted_address, casted_port);
+            await network_manager.StartConnection(casted_address, casted_port);
         }
 
-        private async void ConnectConnection() {
+        private async void Connect() {
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
-            await network_manager.connectConnection(casted_address, casted_port);
+            await network_manager.Connect(casted_address, casted_port);
         }
 
-        private async void send_char() {
+        private async void SendMessage() {
                 message_list.Add(new MessageManager.message_template(_send_message, _username));
-                await network_manager.sendChar(_send_message + "Ω" +  _username);
+                await network_manager.SendMessage(_send_message + "Ω" +  _username);
                 send_message = "";
         }
 
-        private void CloseConnection() {
+        private void Disconnect() {
             network_manager.endPoint.Close();
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName = "") {
+            if (PropertyChanged != null) {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+   
+        private void myModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            if (e.PropertyName == "status_message") {
+                status_message = network_manager.status_message;
+            } else if (e.PropertyName == "received_message") {
+                received_message = network_manager.received_message;
+            }
+        }
     }
 
 }

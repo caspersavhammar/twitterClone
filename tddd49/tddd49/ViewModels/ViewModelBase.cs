@@ -1,7 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace tddd49.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
 
-public abstract class ViewModelBase : ObservableObject
-{
+public class ViewModelBase : ObservableObject {
+    
 }
