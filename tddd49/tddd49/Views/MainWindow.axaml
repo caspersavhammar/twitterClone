@@ -91,7 +91,19 @@
                             <Span Foreground="Black">Chat History:</Span>
                         </TextBlock>
                         <StackPanel>
-
+                            <ItemsControl ItemsSource="{Binding history_list}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Margin="10,10,0,0"
+                                                CornerRadius="5"
+                                                BorderBrush="Gray" BorderThickness="0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Foreground="Black" Text="{Binding Item1}"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
                     </StackPanel>
                 </Border>

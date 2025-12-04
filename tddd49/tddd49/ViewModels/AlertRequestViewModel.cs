@@ -6,15 +6,12 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using tddd49.Models;
 
-namespace tddd49.ViewModels
-{
-    public class AlertRequestViewModel : INotifyPropertyChanged
-    {
+namespace tddd49.ViewModels {
+    public class AlertRequestViewModel : INotifyPropertyChanged {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string property_name)
-        {
+        protected virtual void OnPropertyChanged(string property_name) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property_name));
         }
 
@@ -22,16 +19,14 @@ namespace tddd49.ViewModels
 
         public ICommand send_request { get; }
 
-        public AlertRequestViewModel(NetworkManager nm)
-        {
+        public AlertRequestViewModel(NetworkManager nm) {
             network_manager = nm;
             send_request = new RelayCommand<string>(SendRequest);
         }
 
         public AlertRequestViewModel() {}
 
-        private async void SendRequest(string response)
-        {
+        private async void SendRequest(string response) {
             NetworkStream stream = network_manager.stream;
             if (response == "1") {
                 var responseBytes = Encoding.UTF8.GetBytes(response);

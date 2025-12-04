@@ -12,17 +12,26 @@ namespace tddd49.Models {
 
         public NetworkStream stream;
         public TcpClient endPoint;
+        public string username;
+        
         private string _status_message;
         private string _received_message;
+        private string _friends_username;
 
         public string status_message {
-            get { return _status_message; }
-            set { _status_message = value; OnPropertyChanged("status_message"); }
+            get => _status_message;
+            private set { _status_message = value; OnPropertyChanged("status_message"); }
         }
 
         public string received_message {
-            get { return _received_message; }
-            set { _received_message = value; OnPropertyChanged("received_message");}
+            get => _received_message;
+            private set { _received_message = value; OnPropertyChanged("received_message");}
+        }
+
+        public string friends_username
+        {
+            get => _friends_username;
+            set { _friends_username= value; OnPropertyChanged("friends_username"); }
         }
 
         public async Task StartConnection(IPAddress address, int PORT) {
@@ -51,6 +60,15 @@ namespace tddd49.Models {
                     if (await AcceptConnection()) {
                         status_message = "Client connected";
                         _alert_window.Close();
+                        
+                        // Send username to Server:
+                        var usernameBytes = Encoding.UTF8.GetBytes(username);
+                        await stream.WriteAsync(usernameBytes);
+                        // Receive username from Server:
+                        var buffer = new byte[1_024];
+                        int received_username = await stream.ReadAsync(buffer);
+                        friends_username = Encoding.UTF8.GetString(buffer, 0, received_username);
+                        
                         break;
                     }
 
@@ -79,8 +97,7 @@ namespace tddd49.Models {
                 return;
             }
 
-            try
-            {
+            try {
                 endPoint = new TcpClient();
                 Console.WriteLine("Connecting to the server...");
                 await endPoint.ConnectAsync(ipEndPoint);
@@ -90,8 +107,17 @@ namespace tddd49.Models {
                 if ( await AcceptConnection()) {
                     var responseBytes = Encoding.UTF8.GetBytes("1");
                     await stream.WriteAsync(responseBytes);
+                    
                     status_message = "Server connected";
                     _alert_window.Close();
+
+                    // Send username to Server:
+                    var usernameBytes = Encoding.UTF8.GetBytes(username);
+                    await stream.WriteAsync(usernameBytes);
+                    // Receive username from Server:
+                    var buffer = new byte[1_024];
+                    int received_username = await stream.ReadAsync(buffer);
+                    friends_username = Encoding.UTF8.GetString(buffer, 0, received_username);
                 }
                 else {
                     _alert_window.Close();

@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Net;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using System.Text.Json;
+using System.IO;
 using tddd49.Models;
 
 namespace tddd49.ViewModels
@@ -16,6 +18,7 @@ namespace tddd49.ViewModels
             ip_address = "127.0.0.1";
             port = "13000";
             message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>());
+            history_list = new ObservableCollection<Tuple<string, ObservableCollection<MessageManager.message_template>>>(JsonSerializer.Deserialize<List<Tuple<string, ObservableCollection<MessageManager.message_template>>>>(File.ReadAllText("db/db.json")));
             network_manager = nm;
             network_manager.PropertyChanged += myModel_PropertyChanged;
 
@@ -31,6 +34,7 @@ namespace tddd49.ViewModels
         private string _ip_address;
         private string _port;
         private string _username;
+        private string friends_username;
         private string _status_message;
         private string _send_message;
         private string _received_message;
@@ -54,6 +58,7 @@ namespace tddd49.ViewModels
             get => _username;
             set {
                 _username = value;
+                network_manager.username = _username;
                 OnPropertyChanged("username");
             }
         }
@@ -71,7 +76,7 @@ namespace tddd49.ViewModels
             set
             {
                 _received_message = value;
-                MessageManager.message_template message = MessageManager.message_to_template(value);
+                MessageManager.message_template message = MessageManager.MessageToTemplate(value);
                 message_list.Add(message);
                 OnPropertyChanged("received_message");
             }
@@ -86,7 +91,8 @@ namespace tddd49.ViewModels
         }
 
         public ObservableCollection<MessageManager.message_template> message_list { get; set; }
-
+        public ObservableCollection<Tuple<string, ObservableCollection<MessageManager.message_template>>> history_list { get; set; }
+        
         public ICommand start { get; }
         public ICommand connect { get; }
         public ICommand send_message_button { get; }
@@ -105,12 +111,14 @@ namespace tddd49.ViewModels
         }
 
         private async void SendMessage() {
-                message_list.Add(new MessageManager.message_template(_send_message, _username));
-                await network_manager.SendMessage(_send_message + "^" +  _username);
+                message_list.Add(MessageManager.MessageToTemplate(_send_message, _username));
+                await network_manager.SendMessage(_send_message + "DEL" +  _username);
                 send_message = "";
         }
 
-        private void Disconnect() {
+        private void Disconnect()
+        {
+            MessageManager.SaveConversation(message_list, friends_username);
             network_manager.endPoint.Close();
         }
 
@@ -126,6 +134,8 @@ namespace tddd49.ViewModels
                 status_message = network_manager.status_message;
             } else if (e.PropertyName == "received_message") {
                 received_message = network_manager.received_message;
+            } else if (e.PropertyName == "friends_username") {
+                friends_username = network_manager.friends_username;
             }
         }
     }
