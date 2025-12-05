@@ -2,10 +2,12 @@ using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
-using System.Media;
+using Plugin.Maui.Audio;
+using Microsoft.Maui.Storage;
 using tddd49.Views;
+using Encoding = System.Text.Encoding;
+using FileSystem = Microsoft.Maui.Storage.FileSystem;
 
 namespace tddd49.Models {
     public class NetworkManager : INotifyPropertyChanged {
@@ -177,9 +179,11 @@ namespace tddd49.Models {
             }
         }
         
-        private static void BuzzMe() {
-            SoundPlayer player = new SoundPlayer(@"c:\mywavfile.wav");
-            player.Play();
+        private static async void BuzzMe()
+        {
+            var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("Assets/buzz.mp3"));
+
+            audioPlayer.Play();
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
