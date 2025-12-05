@@ -26,6 +26,7 @@ namespace tddd49.ViewModels
             start = new RelayCommand(Start);
             send_message_button = new RelayCommand(SendMessage);
             disconnect = new RelayCommand(Disconnect);
+            show_conversation = new RelayCommand<ObservableCollection<MessageManager.message_template>>(ShowConversation);
         }
 
         public MainWindowViewModel() {}
@@ -97,6 +98,7 @@ namespace tddd49.ViewModels
         public ICommand connect { get; }
         public ICommand send_message_button { get; }
         public ICommand disconnect { get; }
+        public ICommand show_conversation { get; }
 
         private async void Start() {
             IPAddress casted_address = IPAddress.Parse(_ip_address);
@@ -122,6 +124,15 @@ namespace tddd49.ViewModels
             network_manager.endPoint.Close();
         }
 
+        private void ShowConversation(ObservableCollection<MessageManager.message_template>? convo)
+        {
+            MessageManager.SaveConversation(message_list, friends_username);
+            message_list.Clear();
+            foreach (var item in convo) {
+                message_list.Add(item);
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName = "") {
             if (PropertyChanged != null) {
@@ -139,5 +150,4 @@ namespace tddd49.ViewModels
             }
         }
     }
-
 }

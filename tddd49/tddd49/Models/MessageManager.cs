@@ -27,9 +27,11 @@ namespace tddd49.Models {
             return new message_template(message, from);
         }
 
-        public static void SaveConversation(ObservableCollection<message_template> conversation, string to)
-        {
-
+        public static void SaveConversation(ObservableCollection<message_template> conversation, string? to) {
+            if (to == null) {
+                return;
+            }
+            
             List<Tuple<string, ObservableCollection<message_template>>> file_contents = JsonSerializer.Deserialize<List<Tuple<string, ObservableCollection<message_template>>>>(File.ReadAllText("db/db.json"));
 
             file_contents.Add(new Tuple<string, ObservableCollection<message_template>>(to, conversation));
