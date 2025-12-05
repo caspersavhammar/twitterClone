@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
+using System.Media;
 using tddd49.Views;
 
 namespace tddd49.Models {
@@ -156,6 +156,9 @@ namespace tddd49.Models {
                     if (message_from_stream == "") {
                         throw new Exception("Error: No client connected");
                     }
+                    else if (message_from_stream == "BUZZING") {
+                        BuzzMe();
+                    }
                     received_message = message_from_stream;
                 }
             }
@@ -174,6 +177,10 @@ namespace tddd49.Models {
             }
         }
         
+        private static void BuzzMe() {
+            SoundPlayer player = new SoundPlayer(@"c:\mywavfile.wav");
+            player.Play();
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName = "") {

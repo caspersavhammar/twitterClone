@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
-using System.Text.Json;
-using System.IO;
 using tddd49.Models;
 
 namespace tddd49.ViewModels
@@ -31,6 +31,7 @@ namespace tddd49.ViewModels
             disconnect = new RelayCommand(Disconnect);
             show_conversation =
                 new RelayCommand<ObservableCollection<MessageManager.message_template>>(ShowConversation);
+            buzz = new RelayCommand(Buzz);
         }
 
         public MainWindowViewModel() {}
@@ -116,6 +117,8 @@ namespace tddd49.ViewModels
         public ICommand send_message_button { get; }
         public ICommand disconnect { get; }
         public ICommand show_conversation { get; }
+        public ICommand buzz { get; }
+        
         private async void Start() {
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
@@ -147,6 +150,13 @@ namespace tddd49.ViewModels
             foreach (var item in convo) {
                 message_list.Add(item);
             }
+        }
+
+        private async void Buzz() 
+        {
+            NetworkStream stream = network_manager.stream;
+            var responseBytes = Encoding.UTF8.GetBytes("BUZZING");
+            await stream.WriteAsync(responseBytes);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
