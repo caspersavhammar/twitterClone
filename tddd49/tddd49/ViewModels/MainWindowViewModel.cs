@@ -13,12 +13,15 @@ namespace tddd49.ViewModels
 {
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
-        public MainWindowViewModel(NetworkManager nm) {
+        public MainWindowViewModel(NetworkManager nm)
+        {
             status_message = "";
             ip_address = "127.0.0.1";
             port = "13000";
-            message_list = new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>());
-            history_list = new ObservableCollection<Tuple<string, ObservableCollection<MessageManager.message_template>>>(JsonSerializer.Deserialize<List<Tuple<string, ObservableCollection<MessageManager.message_template>>>>(File.ReadAllText("db/db.json")));
+            message_list =
+                new ObservableCollection<MessageManager.message_template>(new List<MessageManager.message_template>());
+            history_list = MessageManager.get_db();
+            history_list_complete = MessageManager.get_db();
             network_manager = nm;
             network_manager.PropertyChanged += myModel_PropertyChanged;
 
@@ -26,7 +29,8 @@ namespace tddd49.ViewModels
             start = new RelayCommand(Start);
             send_message_button = new RelayCommand(SendMessage);
             disconnect = new RelayCommand(Disconnect);
-            show_conversation = new RelayCommand<ObservableCollection<MessageManager.message_template>>(ShowConversation);
+            show_conversation =
+                new RelayCommand<ObservableCollection<MessageManager.message_template>>(ShowConversation);
         }
 
         public MainWindowViewModel() {}
@@ -39,6 +43,7 @@ namespace tddd49.ViewModels
         private string _status_message;
         private string _send_message;
         private string _received_message;
+        private string _search_history;
 
         public string ip_address {
             get => _ip_address;
@@ -90,16 +95,27 @@ namespace tddd49.ViewModels
                 OnPropertyChanged("send_message");
             }
         }
-
+        
+        public string search_history {
+            get => _search_history;
+            set {
+                _search_history = value;
+                history_list.Clear();
+                foreach (var i in MessageManager.SearchHistory(history_list_complete, _search_history)) {
+                    history_list.Add(i);
+                }
+                OnPropertyChanged("search_history");
+            }
+        }
         public ObservableCollection<MessageManager.message_template> message_list { get; set; }
         public ObservableCollection<Tuple<string, ObservableCollection<MessageManager.message_template>>> history_list { get; set; }
+        private ObservableCollection<Tuple<string, ObservableCollection<MessageManager.message_template>>> history_list_complete { get; set; }
         
         public ICommand start { get; }
         public ICommand connect { get; }
         public ICommand send_message_button { get; }
         public ICommand disconnect { get; }
         public ICommand show_conversation { get; }
-
         private async void Start() {
             IPAddress casted_address = IPAddress.Parse(_ip_address);
             int casted_port = int.Parse(_port);
