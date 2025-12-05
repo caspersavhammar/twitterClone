@@ -69,12 +69,12 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </StackPanel>
-                    <Grid Grid.Row="1" Margin="10" ColumnDefinitions="11*, 1*">
+                    <Grid Grid.Row="1" Margin="10" ColumnDefinitions="11*, 1*, 1*">
                         <TextBox Grid.Column="0" Text="{Binding send_message}" HorizontalContentAlignment="Stretch" Background="AntiqueWhite" BorderBrush="Black" CornerRadius="20" />
                         <Button Grid.Column="1" Command="{Binding send_message_button}" Margin="5,0,0,0" CornerRadius="10">
                             <TextBlock HorizontalAlignment="Center" Foreground="Black">Send</TextBlock>
                         </Button>
-                        <Button Grid.Column="1" Command="{Binding buzz}" Margin="5,0,0,0" CornerRadius="10">
+                        <Button Grid.Column="2" Command="{Binding buzz}" Margin="5,0,0,0" CornerRadius="10">
                             <TextBlock HorizontalAlignment="Center" Foreground="Black">Buzz</TextBlock>
                         </Button>
                     </Grid>
