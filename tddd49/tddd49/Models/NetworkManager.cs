@@ -4,10 +4,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Plugin.Maui.Audio;
-using Microsoft.Maui.Storage;
-using tddd49.Views;
 using Encoding = System.Text.Encoding;
 using FileSystem = Microsoft.Maui.Storage.FileSystem;
+using tddd49.Views;
 
 namespace tddd49.Models {
     public class NetworkManager : INotifyPropertyChanged {
