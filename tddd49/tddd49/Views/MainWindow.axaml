@@ -12,7 +12,7 @@
     <StackPanel Background="BurlyWood">
         <Border Margin="10" Padding="10" Background="AntiqueWhite" BorderBrush="Black" BorderThickness="1" CornerRadius="10">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Span Foreground="Black">Welcome to Shut App</Span>
+                <Span Foreground="Black">Welcome to Chat App</Span>
             </TextBlock>
         </Border>
         <Grid ColumnDefinitions="1*, 5*, 1*">

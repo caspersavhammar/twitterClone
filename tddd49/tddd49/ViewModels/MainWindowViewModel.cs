@@ -133,7 +133,6 @@ namespace tddd49.ViewModels
 
         private async void SendMessage() {
             if (_send_message == "BUZZING") {
-                Console.WriteLine("We bussin");
                 await network_manager.SendMessage(_send_message + "^" +  _username);
                 return;    
             }

@@ -71,7 +71,6 @@ namespace tddd49.Models {
                         break;
                     }
 
-                    _alert_window.Close();
                 }
 
                 Console.WriteLine("Connection accepted!");
@@ -81,6 +80,7 @@ namespace tddd49.Models {
                 status_message = "Error: Active server on port";
             }
             finally {
+                Console.WriteLine("Closing connection");
                 server.Stop();
                 friends_username = "";
                 endPoint = null;
@@ -137,7 +137,7 @@ namespace tddd49.Models {
                 status_message = "Error: No active server";
             }
             finally {
-                Console.WriteLine("If you sea this its to late");
+                Console.WriteLine("Closing connection");
                 endPoint.Close();
                 friends_username = "";
                 endPoint = null;
@@ -175,7 +175,6 @@ namespace tddd49.Models {
             }
             catch (Exception e) {
                 status_message = "Client disconnected";
-                Console.WriteLine(e);
             }
         }
         public async Task SendMessage(string str) {
@@ -189,7 +188,6 @@ namespace tddd49.Models {
         }
         
         private static async void BuzzMe() {
-            Console.WriteLine("Buzzed");
             var gnome_window = new gnome();
             gnome_window.Show();
             await Task.Delay(5000);

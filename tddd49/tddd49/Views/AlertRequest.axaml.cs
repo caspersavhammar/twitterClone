@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Avalonia.Controls;
 using tddd49.ViewModels;
 using tddd49.Models;
