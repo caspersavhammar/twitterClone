@@ -132,9 +132,14 @@ namespace tddd49.ViewModels
         }
 
         private async void SendMessage() {
-                message_list.Add(MessageManager.MessageToTemplate(_send_message, _username));
+            if (_send_message == "BUZZING") {
+                Console.WriteLine("We bussin");
                 await network_manager.SendMessage(_send_message + "DEL" +  _username);
-                send_message = "";
+                return;    
+            }
+            message_list.Add(MessageManager.MessageToTemplate(_send_message, _username));
+            await network_manager.SendMessage(_send_message + "DEL" +  _username);
+            send_message = "";
         }
 
         private void Disconnect()

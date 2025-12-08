@@ -3,9 +3,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Plugin.Maui.Audio;
 using Encoding = System.Text.Encoding;
-using FileSystem = Microsoft.Maui.Storage.FileSystem;
 using tddd49.Views;
 
 namespace tddd49.Models {
@@ -84,6 +82,8 @@ namespace tddd49.Models {
             }
             finally {
                 server.Stop();
+                friends_username = "";
+                endPoint = null;
             }
         }
 
@@ -132,6 +132,8 @@ namespace tddd49.Models {
             finally {
                 Console.WriteLine("If you sea this its to late");
                 endPoint.Close();
+                friends_username = "";
+                endPoint = null;
             }
         }
 
@@ -159,6 +161,7 @@ namespace tddd49.Models {
                     }
                     else if (message_from_stream == "BUZZING") {
                         BuzzMe();
+                        continue;
                     }
                     received_message = message_from_stream;
                 }
@@ -178,11 +181,12 @@ namespace tddd49.Models {
             }
         }
         
-        private static async void BuzzMe()
-        {
-            var audioPlayer = AudioManager.Current.CreatePlayer(await FileSystem.OpenAppPackageFileAsync("Assets/buzz.mp3"));
-
-            audioPlayer.Play();
+        private static async void BuzzMe() {
+            Console.WriteLine("Buzzed");
+            var gnome_window = new gnome();
+            gnome_window.Show();
+            await Task.Delay(5000);
+            gnome_window.Close();
         }
         public event PropertyChangedEventHandler PropertyChanged;
 
