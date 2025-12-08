@@ -134,18 +134,29 @@ namespace tddd49.ViewModels
         private async void SendMessage() {
             if (_send_message == "BUZZING") {
                 Console.WriteLine("We bussin");
-                await network_manager.SendMessage(_send_message + "DEL" +  _username);
+                await network_manager.SendMessage(_send_message + "^" +  _username);
                 return;    
             }
             message_list.Add(MessageManager.MessageToTemplate(_send_message, _username));
-            await network_manager.SendMessage(_send_message + "DEL" +  _username);
+            await network_manager.SendMessage(_send_message + "^" +  _username);
             send_message = "";
         }
 
         private void Disconnect()
         {
-            MessageManager.SaveConversation(message_list, friends_username);
-            network_manager.endPoint.Close();
+            try
+            {
+                MessageManager.SaveConversation(message_list, friends_username);
+                message_list.Clear();
+                history_list_complete = MessageManager.get_db();
+                search_history = "tmp";
+                search_history = "";
+                network_manager.endPoint.Close();
+            }
+            catch (Exception e)
+            {
+                status_message = "Disconnected";
+            }
         }
 
         private void ShowConversation(ObservableCollection<MessageManager.message_template>? convo)

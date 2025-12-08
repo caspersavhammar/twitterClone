@@ -19,7 +19,7 @@ namespace tddd49.Models {
         }
 
         public static message_template MessageToTemplate(string message) {
-            string[] contents = message.Split("DEL");
+            string[] contents = message.Split("^");
             return new message_template(contents[0], contents[1]);
         }
 
@@ -40,7 +40,7 @@ namespace tddd49.Models {
                 return;
             }
             List<Tuple<string, ObservableCollection<message_template>>> file_contents = JsonSerializer.Deserialize<List<Tuple<string, ObservableCollection<message_template>>>>(File.ReadAllText("db/db.json"));
-            file_contents.Add(new Tuple<string, ObservableCollection<message_template>>(to, conversation));
+            file_contents.Insert(0, new Tuple<string, ObservableCollection<message_template>>(to, conversation));
             File.WriteAllText("db/db.json", JsonSerializer.Serialize(file_contents));
         }
 

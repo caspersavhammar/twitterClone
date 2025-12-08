@@ -98,17 +98,19 @@ namespace tddd49.Models {
                 return;
             }
 
-            try {
+            try
+            {
                 endPoint = new TcpClient();
                 Console.WriteLine("Connecting to the server...");
                 await endPoint.ConnectAsync(ipEndPoint);
                 var _alert_window = new AlertResponse();
                 _alert_window.Show();
                 stream = endPoint.GetStream();
-                if ( await AcceptConnection()) {
+                if (await AcceptConnection())
+                {
                     var responseBytes = Encoding.UTF8.GetBytes("1");
                     await stream.WriteAsync(responseBytes);
-                    
+
                     status_message = "Server connected";
                     _alert_window.Close();
 
@@ -120,14 +122,19 @@ namespace tddd49.Models {
                     int received_username = await stream.ReadAsync(buffer);
                     friends_username = Encoding.UTF8.GetString(buffer, 0, received_username);
                 }
-                else {
+                else
+                {
                     _alert_window.Close();
                     status_message = "Error: No server on port";
                     endPoint.Close();
                     return;
                 }
+
                 Console.WriteLine("Connection established!");
                 await HandleConnection().ConfigureAwait(false);
+            }
+            catch (Exception e) {
+                status_message = "Error: No active server";
             }
             finally {
                 Console.WriteLine("If you sea this its to late");
